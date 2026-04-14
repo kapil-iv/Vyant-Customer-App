@@ -21,7 +21,7 @@ export function ToastProvider({ children }) {
       {children}
       <div className="fixed bottom-4 right-4 z-50 flex w-80 flex-col gap-2">
         {toasts.map((t) => (
-          <div key={t.id} className="rounded-md border bg-white px-3 py-2 text-sm shadow">
+          <div key={t.id} className="rounded-md border bg-vy-surface px-3 py-2 text-sm shadow">
             {t.message}
           </div>
         ))}

@@ -23,7 +23,7 @@ export function WishlistPage() {
         const product = item.product ?? item;
         const productId = product._id ?? item.productId;
         return (
-          <article key={item._id ?? productId} className="overflow-hidden rounded-md border bg-white">
+          <article key={item._id ?? productId} className="overflow-hidden rounded-md border bg-vy-surface">
             <img src={product.images?.[0] ?? ""} alt={product.name} className="h-36 w-full object-cover" loading="lazy" />
             <div className="space-y-2 p-2">
               <p className="line-clamp-1 text-sm font-medium">{product.name}</p>

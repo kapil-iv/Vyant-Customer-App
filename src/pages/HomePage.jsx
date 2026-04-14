@@ -12,17 +12,17 @@ import salebanner from "./assets/salebanner.jpg";
 function HomeSkeleton() {
   return (
     <div className="space-y-10 pb-16 md:space-y-12">
-      <div className="h-[400px] w-full animate-pulse rounded-[16px] bg-slate-200 md:h-[540px]" />
+      <div className="h-[40vh] min-h-[300px] w-full animate-pulse rounded-[16px] bg-vy-surface-muted md:h-[70vh]" />
       <div className="space-y-4">
-        <div className="h-8 w-48 animate-pulse rounded bg-slate-200" />
-        <div className="grid gap-5 md:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-48 animate-pulse rounded-[16px] bg-slate-200 md:h-56" />
+        <div className="h-8 w-48 animate-pulse rounded bg-vy-surface-muted" />
+        <div className="flex gap-4 overflow-hidden">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-32 w-[260px] flex-none animate-pulse rounded-[16px] bg-vy-surface-muted md:h-40 md:w-[320px]" />
           ))}
         </div>
       </div>
       <div className="space-y-4">
-        <div className="h-8 w-64 animate-pulse rounded bg-slate-200" />
+        <div className="h-8 w-64 animate-pulse rounded bg-vy-surface-muted" />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <ProductSkeleton key={i} />
@@ -140,26 +140,26 @@ export function HomePage() {
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">Shop By Category</h2>
+          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Shop By Category</h2>
           {selectedCategory ? (
             <button
               type="button"
               onClick={() => setSelectedCategory("")}
-              className="text-sm font-semibold text-slate-700 hover:text-slate-900"
+              className="text-sm font-semibold text-vy-muted hover:text-vy-text"
             >
               Clear
             </button>
           ) : null}
         </div>
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 hide-scrollbar">
           {categoryCards.map((category) => (
             <button
               key={category.key}
               type="button"
               onClick={() => setSelectedCategory(category.key)}
-              className={`group relative overflow-hidden rounded-[16px] border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 ${selectedCategory === category.key
-                  ? "border-indigo-500 ring-2 ring-indigo-500/20"
-                  : "border-slate-200 hover:border-slate-300"
+              className={`group relative w-[260px] flex-none snap-center overflow-hidden rounded-[16px] border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[320px] ${selectedCategory === category.key
+                ? "border-indigo-500 ring-2 ring-indigo-500/20"
+                : "border-vy-border hover:border-vy-border"
                 }`}
             >
               <div className="absolute inset-0 h-full w-full">
@@ -167,9 +167,9 @@ export function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity group-hover:opacity-90" />
                 {selectedCategory === category.key && <div className="absolute inset-0 bg-indigo-500/20 mix-blend-overlay" />}
               </div>
-              <div className="relative flex h-48 flex-col justify-end p-5 md:h-56">
-                <p className="mb-1 text-2xl font-extrabold tracking-tight text-white">{category.title}</p>
-                <p className="text-sm font-medium text-slate-200">{category.description}</p>
+              <div className="relative flex h-32 flex-col justify-end p-4 md:h-40">
+                <p className="mb-1 text-xl font-extrabold tracking-tight text-white md:text-2xl">{category.title}</p>
+                <p className="line-clamp-1 text-xs font-medium text-slate-200 md:text-sm">{category.description}</p>
               </div>
             </button>
           ))}
@@ -178,10 +178,10 @@ export function HomePage() {
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">
             {selectedCategory ? `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Collection` : "New Season Essentials"}
           </h2>
-          <Link to={selectedCategory ? `/products?category=${selectedCategory}` : "/products"} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
+          <Link to={selectedCategory ? `/products?category=${selectedCategory}` : "/products"} className="text-sm font-semibold text-vy-muted hover:text-vy-text">
             {selectedCategory ? "View all in category" : "All Products"}
           </Link>
         </div>
@@ -202,10 +202,10 @@ export function HomePage() {
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
+          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">
             {selectedCategory ? `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Sales` : "Summer Sales"}
           </h2>
-          <Link to="/sales" className="text-sm font-semibold text-slate-700 hover:text-slate-900">View all sales</Link>
+          <Link to="/sales" className="text-sm font-semibold text-vy-muted hover:text-vy-text">View all sales</Link>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           {filteredSales.map((sale) => (
@@ -227,12 +227,12 @@ export function HomePage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
+        <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">
           {selectedCategory ? `${selectedCategory[0].toUpperCase()}${selectedCategory.slice(1)} Influencers Collection` : "Influencers Collection"}
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredInfluencerCollections.map((link) => (
-            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
+            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
               <div className="relative h-56 overflow-hidden">
                 <img src={link.product?.images?.[0] || ""} alt={link.title || link.product?.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
                 <span className="absolute left-3 top-3 rounded-full bg-teal-700 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
@@ -240,9 +240,9 @@ export function HomePage() {
                 </span>
               </div>
               <div className="space-y-1 p-4">
-                <h3 className="text-lg font-bold tracking-tight text-slate-900">{link.title || link.product?.name}</h3>
-                <p className="text-sm text-slate-600">{link.caption || "Curated by influencer"}</p>
-                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">By {link.influencer?.name || "Influencer"}</p>
+                <h3 className="text-lg font-bold tracking-tight text-vy-text">{link.title || link.product?.name}</h3>
+                <p className="text-sm text-vy-muted">{link.caption || "Curated by influencer"}</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-vy-muted">By {link.influencer?.name || "Influencer"}</p>
               </div>
             </Link>
           ))}

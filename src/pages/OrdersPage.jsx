@@ -23,21 +23,21 @@ export function OrdersPage() {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-semibold text-slate-900">My Orders</h1>
+      <h1 className="text-2xl font-semibold text-vy-text">My Orders</h1>
       <div className="space-y-3">
         {orders.map((order) => (
-          <article key={order._id ?? order.id} className="rounded-xl border border-slate-200 bg-white p-4">
+          <article key={order._id ?? order.id} className="rounded-xl border border-vy-border bg-vy-surface p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="text-sm font-semibold text-slate-900">Order #{(order._id ?? order.id ?? "").slice(-8)}</p>
-                <p className="text-xs text-slate-500">Status: {order.status ?? "pending"}</p>
+                <p className="text-sm font-semibold text-vy-text">Order #{(order._id ?? order.id ?? "").slice(-8)}</p>
+                <p className="text-xs text-vy-muted">Status: {order.status ?? "pending"}</p>
                 {order.returnStatus ? <p className="text-xs text-amber-700">Return: {order.returnStatus}</p> : null}
               </div>
-              <p className="text-sm font-semibold text-slate-900">Rs. {Number(order.totalAmount ?? order.total ?? 0).toFixed(2)}</p>
+              <p className="text-sm font-semibold text-vy-text">Rs. {Number(order.totalAmount ?? order.total ?? 0).toFixed(2)}</p>
             </div>
 
             <div className="mt-3 flex justify-end">
-              <Link to={`/orders/${order._id ?? order.id}`} className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700">
+              <Link to={`/orders/${order._id ?? order.id}`} className="rounded-md border border-vy-border px-3 py-2 text-sm text-vy-muted">
                 View details
               </Link>
             </div>

@@ -48,7 +48,7 @@ export function HeroSlider({ theme, fallbackImage }) {
 
   return (
     <div className="relative overflow-hidden rounded-[16px] bg-slate-900 shadow-2xl shadow-indigo-200/40">
-      <div className="relative flex h-[400px] md:h-[540px] w-full transition-transform duration-1000 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+      <div className="relative flex h-[40vh] min-h-[300px] w-full transition-transform duration-1000 ease-in-out md:h-[70vh]" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
         {slides.map((slide) => (
           <div key={slide.id} className="relative min-w-full h-full flex-shrink-0">
             <img src={slide.image} alt={slide.title} className="h-full w-full object-cover" loading="lazy" />
@@ -62,7 +62,7 @@ export function HeroSlider({ theme, fallbackImage }) {
                 <p className="text-base font-medium text-slate-200/90 md:text-lg leading-relaxed max-w-lg">{slide.description}</p>
                 <div className="flex flex-wrap gap-4 pt-4">
                   <Link to={slide.ctaLink} className="vy-primary-btn px-8 py-3.5 text-sm font-bold uppercase tracking-wide transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30">{slide.ctaText}</Link>
-                  <Link to="/products" className="rounded-[12px] border border-white/40 bg-white/5 px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/60">All Products</Link>
+                  <Link to="/products" className="rounded-[12px] border border-white/40 bg-vy-surface/5 px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-md transition-all hover:bg-vy-surface/10 hover:border-white/60">All Products</Link>
                 </div>
               </div>
             </div>
@@ -82,7 +82,7 @@ export function HeroSlider({ theme, fallbackImage }) {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-1.5 rounded-full transition-all duration-500 ${currentSlide === index ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/70"}`}
+            className={`h-1.5 rounded-full transition-all duration-500 ${currentSlide === index ? "w-8 bg-vy-surface" : "w-2 bg-vy-surface/40 hover:bg-vy-surface/70"}`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}

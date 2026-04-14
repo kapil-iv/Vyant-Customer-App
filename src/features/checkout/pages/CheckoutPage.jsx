@@ -237,7 +237,7 @@ export function CheckoutPage() {
         {STEP_LABELS.map((label, idx) => {
           const current = idx + 1 === step;
           const done = idx + 1 < step;
-          return <li key={label} className={`flex items-center gap-2 rounded-[12px] border px-3 py-2 text-sm ${current ? "border-slate-900 bg-slate-900 text-white" : done ? "border-emerald-500 bg-emerald-500 text-white" : "border-slate-200"}`}><span className="text-xs font-bold">{idx + 1}</span> {label}</li>;
+          return <li key={label} className={`flex items-center gap-2 rounded-[12px] border px-3 py-2 text-sm ${current ? "border-slate-900 bg-slate-900 text-white" : done ? "border-emerald-500 bg-emerald-500 text-white" : "border-vy-border"}`}><span className="text-xs font-bold">{idx + 1}</span> {label}</li>;
         })}
       </ol>
 
@@ -245,7 +245,7 @@ export function CheckoutPage() {
 
       {quote ? (
         <div className="grid gap-6 md:grid-cols-[1.2fr_1fr]">
-          <div className="space-y-4 rounded-[12px] border bg-white p-5 shadow-xl shadow-slate-200/50">
+          <div className="space-y-4 rounded-[12px] border bg-vy-surface p-5 shadow-xl shadow-slate-200/50">
             {step === 1 ? (
               <>
                 <h2 className="text-lg font-bold">Step 1: Select Address</h2>
@@ -265,7 +265,7 @@ export function CheckoutPage() {
                 </button>
                 {currentLocation ? <p className="text-xs text-emerald-700">Location set: {currentLocation.lat}, {currentLocation.lng}</p> : null}
 
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Or add manual address</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-vy-muted">Or add manual address</p>
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   {[ ["fullName", "Full Name"], ["phone", "Phone (10 digits)"], ["line1", "Address Line 1", "md:col-span-2"], ["city", "City"], ["state", "State"], ["pincode", "Pincode"] ].map(([key, label, span]) => (
                     <div key={key} className={span || ""}>
@@ -282,7 +282,7 @@ export function CheckoutPage() {
             {step === 2 ? (
               <>
                 <h2 className="text-lg font-bold">Step 2: Payment</h2>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-vy-muted">
                   Address: {selectedAddress ? `${selectedAddress.fullName}, ${selectedAddress.city}` : currentLocation ? `GPS (${currentLocation.lat}, ${currentLocation.lng})` : `${manualAddress.fullName}, ${manualAddress.city}`}
                 </p>
                 <button className="vy-primary-btn w-full px-5 py-3 text-sm disabled:opacity-60" onClick={handlePayNow} disabled={status === "processing" || !isRazorpayLoaded}>
@@ -294,7 +294,7 @@ export function CheckoutPage() {
             {step === 3 ? <><h2 className="text-lg font-bold">Step 3: Confirmation</h2><p className="text-sm text-emerald-700">Your order is confirmed.</p></> : null}
           </div>
 
-          <aside className="rounded-[12px] border bg-white p-5 shadow-xl shadow-slate-200/50">
+          <aside className="rounded-[12px] border bg-vy-surface p-5 shadow-xl shadow-slate-200/50">
             <h2 className="mb-4 text-lg font-bold">Order Summary</h2>
             <div className="mb-4 space-y-2 text-sm">
               {cartItems.map((item) => (

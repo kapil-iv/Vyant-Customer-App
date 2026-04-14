@@ -74,7 +74,7 @@ export function ProductCard({ product }) {
   };
 
   return (
-    <article className="vy-card overflow-hidden border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-slate-200/60">
+    <article className="vy-card overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-slate-200/60">
       <Link to={`/products/${product._id}`}>
         <div className="relative">
           <img src={product.images?.[0] ?? ""} alt={product.name} className="aspect-[4/5] w-full rounded-t-[12px] object-cover" loading="lazy" />
@@ -85,10 +85,10 @@ export function ProductCard({ product }) {
       </Link>
       <div className="space-y-2 p-3">
         <Link to={`/products/${product._id}`} className="line-clamp-1 text-sm font-bold tracking-tight hover:underline">{product.name}</Link>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-vy-muted">
           {product.category ?? "General"} {product.shop?.shopName ? `• ${product.shop.shopName}` : ""}
         </p>
-        <p className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${closed ? "bg-slate-200 text-slate-600" : "bg-emerald-100 text-emerald-700"}`}>
+        <p className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${closed ? "bg-vy-surface-muted text-vy-muted" : "bg-emerald-100 text-emerald-700"}`}>
           {closed ? "Shop Closed" : "Shop Open"}
         </p>
         <p className="text-sm font-semibold"><Price value={product.discountPrice ?? product.price} /></p>
@@ -101,8 +101,8 @@ export function ProductCard({ product }) {
           >
             {closed ? "Unavailable" : adding ? "Processing..." : inCart ? "Added" : "Add to Cart"}
           </button>
-          <button className="flex items-center justify-center rounded-[12px] border px-3 py-2 transition hover:bg-slate-50" onClick={handleWishlistToggle} aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
-            <Heart className={`h-4 w-4 ${inWishlist ? "fill-red-500 text-red-500" : "text-slate-400"}`} />
+          <button className="flex items-center justify-center rounded-[12px] border px-3 py-2 transition hover:bg-vy-bg" onClick={handleWishlistToggle} aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}>
+            <Heart className={`h-4 w-4 ${inWishlist ? "fill-red-500 text-red-500" : "text-vy-muted"}`} />
           </button>
         </div>
       </div>

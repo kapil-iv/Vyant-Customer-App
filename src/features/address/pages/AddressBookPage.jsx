@@ -21,9 +21,9 @@ export function AddressBookPage() {
     <section className="space-y-4">
       <h1 className="text-xl font-semibold">Address Book</h1>
       <div className="space-y-2">
-        {loading ? <p className="text-sm text-slate-500">Loading...</p> : null}
+        {loading ? <p className="text-sm text-vy-muted">Loading...</p> : null}
         {items.map((a) => (
-          <article key={a._id} className="rounded border bg-white p-3 text-sm">
+          <article key={a._id} className="rounded border bg-vy-surface p-3 text-sm">
             <p className="font-medium">{a.fullName} | {a.phone}</p>
             <p>{a.line1}, {a.city}, {a.state} - {a.pincode}</p>
             <button className="mt-2 rounded border px-2 py-1 text-xs" onClick={async () => { await deleteAddressApi(a._id); await load(); }}>Delete</button>

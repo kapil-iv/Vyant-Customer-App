@@ -30,14 +30,14 @@ export function OrderTimeline({ events = [], trackingStatus }) {
         return (
           <li key={step.key} className="relative pl-8">
             {idx < STEP_MAP.length - 1 ? (
-              <span className={`absolute left-[11px] top-6 h-[44px] w-[2px] ${done ? "bg-emerald-500" : "bg-slate-200"}`} />
+              <span className={`absolute left-[11px] top-6 h-[44px] w-[2px] ${done ? "bg-emerald-500" : "bg-vy-surface-muted"}`} />
             ) : null}
-            <span className={`absolute left-0 top-1 flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold ${done ? "border-emerald-500 bg-emerald-500 text-white" : "border-slate-300 bg-white text-slate-400"}`}>
+            <span className={`absolute left-0 top-1 flex h-6 w-6 items-center justify-center rounded-full border text-xs font-bold ${done ? "border-emerald-500 bg-emerald-500 text-white" : "border-vy-border bg-vy-surface text-vy-muted"}`}>
               {idx + 1}
             </span>
             <div className="pb-6">
-              <p className={`text-sm font-semibold ${done ? "text-slate-900" : "text-slate-500"}`}>{step.label}</p>
-              {eventTime ? <p className="text-xs text-slate-500">{eventTime}</p> : null}
+              <p className={`text-sm font-semibold ${done ? "text-vy-text" : "text-vy-muted"}`}>{step.label}</p>
+              {eventTime ? <p className="text-xs text-vy-muted">{eventTime}</p> : null}
             </div>
           </li>
         );

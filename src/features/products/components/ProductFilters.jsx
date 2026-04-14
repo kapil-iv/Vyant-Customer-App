@@ -1,6 +1,6 @@
 export function ProductFilters({ filters, categories, materials, onChange, className = "" }) {
   return (
-    <div className={`space-y-3 rounded-[12px] border bg-white p-3 shadow-xl shadow-slate-200/50 ${className}`}>
+    <div className={`space-y-3 rounded-[12px] border bg-vy-surface p-3 shadow-xl shadow-slate-200/50 ${className}`}>
       <input
         value={filters.q}
         onChange={(e) => onChange({ q: e.target.value, page: 1 })}

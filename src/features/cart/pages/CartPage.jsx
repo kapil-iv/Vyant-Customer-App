@@ -29,7 +29,7 @@ export function CartPage() {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center text-center">
         <h2 className="text-2xl font-bold">Your cart is empty</h2>
-        <p className="mt-2 text-slate-500">Looks like you haven't added anything to your cart yet.</p>
+        <p className="mt-2 text-vy-muted">Looks like you haven't added anything to your cart yet.</p>
         <Link
           to="/"
           className="mt-6 rounded-md bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
@@ -46,7 +46,7 @@ export function CartPage() {
 
       <div className="grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <div className="rounded-xl border bg-white px-6 shadow-sm">
+          <div className="rounded-xl border bg-vy-surface px-6 shadow-sm">
             {items.map((item) => (
               <CartItem key={item.cartItemId + "-" + item.product._id} item={item} />
             ))}
@@ -54,15 +54,15 @@ export function CartPage() {
         </div>
 
         <div className="lg:col-span-4">
-          <div className="rounded-xl border bg-white p-6 shadow-sm sticky top-20">
+          <div className="rounded-xl border bg-vy-surface p-6 shadow-sm sticky top-20">
             <h2 className="text-lg font-bold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-500">Subtotal ({items.length} items)</span>
+                <span className="text-vy-muted">Subtotal ({items.length} items)</span>
                 <span className="font-medium"><Price value={subtotal} /></span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Tax Estimation (10%)</span>
+                <span className="text-vy-muted">Tax Estimation (10%)</span>
                 <span className="font-medium"><Price value={tax} /></span>
               </div>
             </div>
@@ -83,7 +83,7 @@ export function CartPage() {
 
             <Link
               to="/"
-              className="mt-4 block w-full text-center text-sm font-medium text-slate-600 hover:text-slate-900"
+              className="mt-4 block w-full text-center text-sm font-medium text-vy-muted hover:text-vy-text"
             >
               Continue Shopping
             </Link>

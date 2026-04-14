@@ -63,8 +63,8 @@ export function SalesPage() {
           <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--vy-primary)" }}>
             Campaigns
           </p>
-          <h1 className="text-3xl font-black text-slate-900">All Sales</h1>
-          <p className="mt-1 text-sm text-slate-600">Weekend sale and all other running campaigns are listed below.</p>
+          <h1 className="text-3xl font-black text-vy-text">All Sales</h1>
+          <p className="mt-1 text-sm text-vy-muted">Weekend sale and all other running campaigns are listed below.</p>
         </div>
         <button
           type="button"
@@ -78,7 +78,7 @@ export function SalesPage() {
 
       <div className="space-y-8">
         {orderedSales.map((sale) => (
-          <article key={sale._id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <article key={sale._id} className="overflow-hidden rounded-2xl border border-vy-border bg-vy-surface shadow-sm">
             {sale.bannerImage ? (
               <img src={sale.bannerImage} alt={sale.title} className="h-52 w-full object-cover" loading="lazy" referrerPolicy="no-referrer" />
             ) : null}
@@ -93,9 +93,9 @@ export function SalesPage() {
                 </span>
               </div>
 
-              <h2 className="text-2xl font-black text-slate-900">{sale.title}</h2>
-              {sale.description ? <p className="text-sm text-slate-600">{sale.description}</p> : null}
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <h2 className="text-2xl font-black text-vy-text">{sale.title}</h2>
+              {sale.description ? <p className="text-sm text-vy-muted">{sale.description}</p> : null}
+              <p className="text-xs font-semibold uppercase tracking-wide text-vy-muted">
                 {formatDate(sale.startsAt)} to {formatDate(sale.endsAt)}
               </p>
 
@@ -106,7 +106,7 @@ export function SalesPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">Products will be updated soon for this campaign.</p>
+                <p className="text-sm text-vy-muted">Products will be updated soon for this campaign.</p>
               )}
             </div>
           </article>

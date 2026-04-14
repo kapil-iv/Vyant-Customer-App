@@ -2,7 +2,7 @@ import { Price } from "../../../shared/components/Price";
 
 export function OrderReview({ cart }) {
   return (
-    <div className="rounded border bg-white p-3">
+    <div className="rounded border bg-vy-surface p-3">
       <h3 className="font-semibold">Order Review</h3>
       <div className="mt-2 space-y-1 text-sm">
         {cart.items.map((item) => (

@@ -10,7 +10,7 @@ function ProductGridSkeleton() {
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="h-72 animate-pulse rounded-[12px] bg-slate-200" />
+        <div key={i} className="h-72 animate-pulse rounded-[12px] bg-vy-surface-muted" />
       ))}
     </div>
   );
@@ -100,16 +100,16 @@ export function ShopDetailPage() {
 
   return (
     <section className="space-y-6">
-      <div className="rounded-[12px] border border-[color:var(--vy-border)] bg-white p-5 md:p-6">
+      <div className="rounded-[12px] border border-[color:var(--vy-border)] bg-vy-surface p-5 md:p-6">
         {status === "loading" ? (
-          <div className="h-28 animate-pulse rounded-[12px] bg-slate-200" />
+          <div className="h-28 animate-pulse rounded-[12px] bg-vy-surface-muted" />
         ) : null}
 
         {status === "failed" ? <ErrorState message={error} /> : null}
 
         {status === "succeeded" && shop ? (
           <div className="space-y-4">
-            <Link to="/shops" className="text-sm font-semibold text-slate-600 hover:text-slate-900">
+            <Link to="/shops" className="text-sm font-semibold text-vy-muted hover:text-vy-text">
               Back to shops
             </Link>
 
@@ -118,13 +118,13 @@ export function ShopDetailPage() {
                 <ShopLogo shop={shop} />
                 <div>
                   <h1 className="text-2xl font-extrabold tracking-tight">{shop.shopName}</h1>
-                  <p className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${shop.isOpen ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-700"}`}>
+                  <p className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${shop.isOpen ? "bg-emerald-100 text-emerald-700" : "bg-vy-surface-muted text-vy-muted"}`}>
                     {shop.isOpen ? "Open" : "Closed"}
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-2 text-sm text-slate-600">
+              <div className="space-y-2 text-sm text-vy-muted">
                 <p className="flex items-start gap-2">
                   <MapPin size={16} className="mt-0.5 shrink-0" />
                   <span>{formatAddress(shop)}</span>
@@ -137,7 +137,7 @@ export function ShopDetailPage() {
                         href={item.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full border border-[color:var(--vy-border)] px-3 py-1 text-xs font-semibold hover:bg-slate-50"
+                        className="inline-flex items-center gap-1 rounded-full border border-[color:var(--vy-border)] px-3 py-1 text-xs font-semibold hover:bg-vy-bg"
                       >
                         <Globe size={13} />
                         {item.label}
@@ -145,7 +145,7 @@ export function ShopDetailPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-slate-500">Social links not available yet.</p>
+                  <p className="text-xs text-vy-muted">Social links not available yet.</p>
                 )}
               </div>
             </div>

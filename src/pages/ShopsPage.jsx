@@ -9,7 +9,7 @@ function ShopCardSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, idx) => (
-        <div key={idx} className="h-44 animate-pulse rounded-[12px] bg-slate-200" />
+        <div key={idx} className="h-44 animate-pulse rounded-[12px] bg-vy-surface-muted" />
       ))}
     </div>
   );
@@ -67,14 +67,14 @@ export function ShopsPage() {
       <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Local Shops</h1>
-          <p className="mt-1 text-sm text-slate-600">Browse all active shops and open their product catalogs.</p>
+          <p className="mt-1 text-sm text-vy-muted">Browse all active shops and open their product catalogs.</p>
         </div>
 
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by shop name..."
-          className="w-full rounded-[12px] border border-[color:var(--vy-border)] bg-white px-3 py-2 text-sm outline-none md:max-w-sm"
+          className="w-full rounded-[12px] border border-[color:var(--vy-border)] bg-vy-surface px-3 py-2 text-sm outline-none md:max-w-sm"
         />
       </div>
 
@@ -88,21 +88,21 @@ export function ShopsPage() {
             <Link
               key={shop._id}
               to={`/shops/${shop._id}`}
-              className="group rounded-[12px] border border-[color:var(--vy-border)] bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-lg"
+              className="group rounded-[12px] border border-[color:var(--vy-border)] bg-vy-surface p-4 transition hover:-translate-y-0.5 hover:shadow-lg"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <ShopLogo shop={shop} />
                   <div>
-                    <h3 className="text-base font-bold tracking-tight text-slate-900">{shop.shopName}</h3>
-                    <p className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${shop.isOpen ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-700"}`}>
+                    <h3 className="text-base font-bold tracking-tight text-vy-text">{shop.shopName}</h3>
+                    <p className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[11px] font-semibold ${shop.isOpen ? "bg-emerald-100 text-emerald-700" : "bg-vy-surface-muted text-vy-muted"}`}>
                       {shop.isOpen ? "Open" : "Closed"}
                     </p>
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-slate-700" />
+                <ChevronRight size={18} className="text-vy-muted transition group-hover:translate-x-0.5 group-hover:text-vy-muted" />
               </div>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-vy-muted">
                 {shop.productsCount || 0} products
               </p>
             </Link>

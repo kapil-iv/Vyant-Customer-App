@@ -6,25 +6,46 @@
 
 :root {
   color-scheme: light;
-  --vy-primary: #b36a2f;
-  --vy-secondary: #7a4d2a;
-  --vy-accent: #d48b4d;
-  --vy-bg: #f4ede3;
-  --vy-surface: #fffaf2;
-  --vy-surface-muted: #efe3d1;
-  --vy-text: #3c2a1d;
-  --vy-muted: #7c6553;
-  --vy-border: #dcc9b1;
+  --vy-primary: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+  --vy-secondary: #0ea5e9;
+  --vy-accent: #8b5cf6;
+  --vy-bg: #f8fafc;
+  --vy-surface: #ffffff;
+  --vy-surface-muted: #f1f5f9;
+  --vy-text: #0f172a;
+  --vy-muted: #64748b;
+  --vy-border: #e2e8f0;
 }
 
-html[data-theme-mode="dark"] {
+html.dark {
   color-scheme: dark;
+  --vy-primary: linear-gradient(135deg, #38bdf8, #a78bfa);
+  --vy-secondary: #38bdf8;
+  --vy-accent: #a78bfa;
+  --vy-bg: #0b0f19;
+  --vy-surface: #111827;
+  --vy-surface-muted: #1f2937;
+  --vy-text: #e5e7eb;
+  --vy-muted: #9ca3af;
+  --vy-border: #1f2937;
 }
+
+.bg-primary-gradient {
+  background: var(--vy-primary);
+}
+.text-primary-gradient {
+  background: var(--vy-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Replaced by html.dark above */
 
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background: linear-gradient(180deg, #fffdf9 0%, var(--vy-bg) 100%);
+  background: var(--vy-bg);
   color: var(--vy-text);
 }
 
@@ -44,32 +65,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.bg-white,
-.bg-slate-50,
-.bg-slate-100,
-.bg-slate-200 {
-  background-color: var(--vy-surface) !important;
-}
 
-.text-slate-900,
-.text-slate-800,
-.text-slate-700 {
-  color: var(--vy-text) !important;
-}
-
-.text-slate-600,
-.text-slate-500,
-.text-slate-400,
-.text-slate-300 {
-  color: var(--vy-muted) !important;
-}
-
-.border-slate-50,
-.border-slate-100,
-.border-slate-200,
-.border-slate-300 {
-  border-color: var(--vy-border) !important;
-}
 
 .vy-card {
   border-radius: 12px;
@@ -78,7 +74,7 @@ button:disabled {
 
 .vy-primary-btn {
   border-radius: 12px;
-  background: var(--vy-accent);
+  background: var(--vy-primary);
   color: #fff;
   font-weight: 700;
 }

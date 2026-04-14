@@ -13,7 +13,7 @@ export function LoginPage() {
   }
 
   return (
-    <section className="mx-auto max-w-md rounded-md border bg-white p-4">
+    <section className="mx-auto max-w-md rounded-md border bg-vy-surface p-4">
       <h1 className="text-xl font-semibold">Login</h1>
       <form
         className="mt-4 space-y-2"
@@ -30,7 +30,7 @@ export function LoginPage() {
         {error ? <p className="text-sm text-rose-700">{error}</p> : null}
         <button type="submit" disabled={status === "loading"} className="w-full rounded bg-slate-900 px-3 py-2 text-white">{status === "loading" ? "Logging in..." : "Login"}</button>
       </form>
-      <p className="mt-3 text-sm">No account? <Link to="/register" className="text-slate-900 underline">Register</Link></p>
+      <p className="mt-3 text-sm">No account? <Link to="/register" className="text-vy-text underline">Register</Link></p>
     </section>
   );
 }

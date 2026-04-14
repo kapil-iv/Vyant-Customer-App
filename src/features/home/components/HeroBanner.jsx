@@ -54,7 +54,7 @@ export function HeroBanner({ theme, onExploreSales }) {
         </div>
 
         {bannerImage ? (
-          <div className="hidden self-end overflow-hidden rounded-xl border border-white/30 bg-white/10 shadow-lg backdrop-blur-sm md:block">
+          <div className="hidden self-end overflow-hidden rounded-xl border border-white/30 bg-vy-surface/10 shadow-lg backdrop-blur-sm md:block">
             <img src={bannerImage} alt={`${name} banner`} className="h-48 w-full object-cover" loading="lazy" referrerPolicy="no-referrer" />
           </div>
         ) : null}

@@ -71,14 +71,14 @@ export function ProductDetailPage() {
   return (
     <section className="grid gap-6 md:grid-cols-2">
       <div className="space-y-3">
-        <img src={images[activeImage] ?? ""} alt={product.name} className="h-96 w-full rounded-[12px] border border-slate-200 object-cover" />
+        <img src={images[activeImage] ?? ""} alt={product.name} className="h-96 w-full rounded-[12px] border border-vy-border object-cover" />
         {images.length > 1 ? (
           <div className="flex gap-2 overflow-x-auto">
             {images.map((img, idx) => (
               <button
                 key={img + idx}
                 type="button"
-                className={`h-16 w-16 flex-none overflow-hidden rounded-[12px] border ${idx === activeImage ? "border-slate-900" : "border-slate-200"}`}
+                className={`h-16 w-16 flex-none overflow-hidden rounded-[12px] border ${idx === activeImage ? "border-slate-900" : "border-vy-border"}`}
                 onClick={() => setActiveImage(idx)}
               >
                 <img src={img} alt={`${product.name}-${idx}`} className="h-full w-full object-cover" />
@@ -88,12 +88,12 @@ export function ProductDetailPage() {
         ) : null}
       </div>
 
-      <article className="vy-card space-y-3 border border-slate-200 bg-white p-4">
+      <article className="vy-card space-y-3 border border-vy-border bg-vy-surface p-4">
         <h1 className="text-2xl font-extrabold tracking-tight">{product.name}</h1>
-        <p className="text-sm text-slate-600">{product.description}</p>
+        <p className="text-sm text-vy-muted">{product.description}</p>
         <p className="text-lg font-semibold">Rs. {product.discountPrice ?? product.price}</p>
         <p className="text-sm">Stock: {product.stock ?? 0}</p>
-        {isShopClosed(product) ? <p className="inline-flex rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">Shop Closed</p> : null}
+        {isShopClosed(product) ? <p className="inline-flex rounded-full bg-vy-surface-muted px-3 py-1 text-xs font-semibold text-vy-muted">Shop Closed</p> : null}
 
         {requiresSize ? (
           <select value={selectedSize} onChange={(e) => setSelectedSize(e.target.value)} className="w-full rounded-[12px] border px-3 py-2 text-sm">

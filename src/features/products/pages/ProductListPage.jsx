@@ -12,7 +12,7 @@ function ProductGridSkeleton() {
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="h-72 animate-pulse rounded-[12px] bg-slate-200" />
+        <div key={i} className="h-72 animate-pulse rounded-[12px] bg-vy-surface-muted" />
       ))}
     </div>
   );
@@ -114,7 +114,7 @@ export function ProductListPage() {
 
       {mobileFiltersOpen ? (
         <div className="fixed inset-0 z-[60] bg-black/35 md:hidden">
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-white p-4">
+          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-vy-surface p-4">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-lg font-bold">Filters</h2>
               <button type="button" className="text-sm font-semibold" onClick={() => setMobileFiltersOpen(false)}>Close</button>

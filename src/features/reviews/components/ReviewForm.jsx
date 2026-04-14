@@ -6,7 +6,7 @@ export function ReviewForm({ productId }) {
   const [rating, setRating] = useState(5);
 
   return (
-    <article className="rounded border bg-white p-3">
+    <article className="rounded border bg-vy-surface p-3">
       <h3 className="font-semibold">Write a review</h3>
       <form
         className="mt-2 space-y-2"

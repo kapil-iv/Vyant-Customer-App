@@ -13,7 +13,7 @@ export function RegisterPage() {
   }
 
   return (
-    <section className="mx-auto max-w-md rounded-md border bg-white p-4">
+    <section className="mx-auto max-w-md rounded-md border bg-vy-surface p-4">
       <h1 className="text-xl font-semibold">Register</h1>
       <form
         className="mt-4 space-y-2"
@@ -31,7 +31,7 @@ export function RegisterPage() {
         {error ? <p className="text-sm text-rose-700">{error}</p> : null}
         <button type="submit" disabled={status === "loading"} className="w-full rounded bg-slate-900 px-3 py-2 text-white">{status === "loading" ? "Creating..." : "Create account"}</button>
       </form>
-      <p className="mt-3 text-sm">Have account? <Link to="/login" className="text-slate-900 underline">Login</Link></p>
+      <p className="mt-3 text-sm">Have account? <Link to="/login" className="text-vy-text underline">Login</Link></p>
     </section>
   );
 }

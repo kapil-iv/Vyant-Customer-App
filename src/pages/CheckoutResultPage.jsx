@@ -7,15 +7,15 @@ export function CheckoutResultPage() {
   const isSuccess = state === "success";
 
   return (
-    <section className="mx-auto max-w-lg rounded-xl border border-slate-200 bg-white p-6 text-center">
-      <h1 className="text-2xl font-semibold text-slate-900">{isSuccess ? "Order successful" : "Order failed"}</h1>
-      <p className="mt-2 text-sm text-slate-600">
+    <section className="mx-auto max-w-lg rounded-xl border border-vy-border bg-vy-surface p-6 text-center">
+      <h1 className="text-2xl font-semibold text-vy-text">{isSuccess ? "Order successful" : "Order failed"}</h1>
+      <p className="mt-2 text-sm text-vy-muted">
         {isSuccess ? "Your order has been placed." : "We could not complete your order. Please retry."}
       </p>
-      {orderId ? <p className="mt-1 text-xs text-slate-500">Order ID: {orderId}</p> : null}
+      {orderId ? <p className="mt-1 text-xs text-vy-muted">Order ID: {orderId}</p> : null}
 
       <div className="mt-5 flex justify-center gap-2">
-        <Link to="/" className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700">
+        <Link to="/" className="rounded-md border border-vy-border px-3 py-2 text-sm text-vy-muted">
           Continue shopping
         </Link>
         {isSuccess ? (

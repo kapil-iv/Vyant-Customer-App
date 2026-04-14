@@ -29,7 +29,7 @@ export function SaleHighlights({ sales }) {
           </div>
 
           <div className="relative z-10 flex flex-col items-start md:items-end">
-            <span className="mb-1 whitespace-nowrap rounded-lg bg-white px-4 py-1.5 text-lg font-black text-red-600 shadow-[0_4px_14px_0_rgba(0,0,0,0.1)]">
+            <span className="mb-1 whitespace-nowrap rounded-lg bg-vy-surface px-4 py-1.5 text-lg font-black text-red-600 shadow-[0_4px_14px_0_rgba(0,0,0,0.1)]">
               {sale.saleLabel}
             </span>
             <span className="text-[11px] font-bold uppercase tracking-wider text-white/95">

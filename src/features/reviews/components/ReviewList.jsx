@@ -9,7 +9,7 @@ export function ReviewList({ productId }) {
   }, [productId]);
 
   return (
-    <article className="rounded border bg-white p-3">
+    <article className="rounded border bg-vy-surface p-3">
       <h3 className="font-semibold">Reviews</h3>
       <div className="mt-2 space-y-2 text-sm">
         {reviews.map((r, idx) => (
@@ -18,7 +18,7 @@ export function ReviewList({ productId }) {
             <p>{r.comment ?? r.review ?? ""}</p>
           </div>
         ))}
-        {!reviews.length ? <p className="text-slate-500">No reviews yet.</p> : null}
+        {!reviews.length ? <p className="text-vy-muted">No reviews yet.</p> : null}
       </div>
     </article>
   );
