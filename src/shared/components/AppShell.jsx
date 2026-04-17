@@ -28,6 +28,7 @@ import { logout } from "../../features/auth/authSlice";
 import { fetchActiveTheme } from "../../features/home/api";
 import { applyThemeTokens, getStoredThemeMode, toggleThemeMode as toggleThemeRuntime } from "../../features/home/themeRuntime";
 import { Footer } from "./Footer";
+import { ScrollToTop } from "./ScrollToTop";
 
 const mainNav = [
   { to: "/", label: "Home", icon: Home }
@@ -149,7 +150,7 @@ export function AppShell() {
                 className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${categoriesMenuOpen ? "bg-vy-surface-muted text-vy-text" : "text-vy-text hover:bg-vy-surface-muted"}`}
               >
                 <Menu size={16} />
-                Categories
+                Category & Explore
                 <ChevronDown size={14} className={`transition-transform ${categoriesMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -345,6 +346,7 @@ export function AppShell() {
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+        <ScrollToTop />
         <Outlet />
       </main>
       <Footer />

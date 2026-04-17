@@ -33,6 +33,7 @@ html.dark {
 .bg-primary-gradient {
   background: var(--vy-primary);
 }
+
 .text-primary-gradient {
   background: var(--vy-primary);
   -webkit-background-clip: text;
@@ -40,7 +41,7 @@ html.dark {
   background-clip: text;
 }
 
-/* Replaced by html.dark above */
+/* Base */
 
 body {
   margin: 0;
@@ -54,6 +55,8 @@ body {
   box-sizing: border-box;
 }
 
+/* Buttons */
+
 button {
   transition: transform 0.1s ease, opacity 0.2s ease;
 }
@@ -64,18 +67,113 @@ button:active {
 
 button:disabled {
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
-
+/* ========================= */
+/* 🔥 CARD SYSTEM UPGRADE */
+/* ========================= */
 
 .vy-card {
   border-radius: 12px;
-  box-shadow: 0 20px 45px rgba(148, 163, 184, 0.22);
+  box-shadow: 0 5px 15px rgba(148, 163, 184, 0.22);
+
+  /* ✅ FIXED SIZE SYSTEM */
+  width: 100%;
+  max-width: 320px;
+  min-height: 200px;
+
+  /* ✅ UI IMPROVEMENTS */
+  padding: 16px;
+  background: var(--vy-surface);
+  border: 1px solid var(--vy-border);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+/* 🔥 subtle hover effect (premium feel) */
+.vy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 60px rgba(148, 163, 184, 0.28);
+}
+
+/* 🔥 gradient border glow (very subtle, modern SaaS vibe) */
+.vy-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: var(--vy-primary);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Prevent flex/grid breaking */
+.vy-card {
+  flex-shrink: 0;
+}
+
+/* ========================= */
+/* 🧩 OPTIONAL CARD ELEMENTS */
+/* ========================= */
+
+.vy-card-header {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.vy-card-content {
+  flex: 1;
+  font-size: 14px;
+  color: var(--vy-muted);
+}
+
+.vy-card-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========================= */
+/* 🔥 BUTTON SYSTEM UPGRADE */
+/* ========================= */
 
 .vy-primary-btn {
   border-radius: 12px;
   background: var(--vy-primary);
   color: #fff;
   font-weight: 700;
+
+  padding: 10px 16px;
+  border: none;
+
+  transition: all 0.2s ease;
+}
+
+.vy-primary-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ========================= */
+/* 📦 GRID HELPER (OPTIONAL) */
+/* ========================= */
+
+.vy-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
