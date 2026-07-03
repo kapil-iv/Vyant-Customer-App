@@ -1,12 +1,20 @@
-import { api, unwrapApi } from "../../shared/api/baseApi";
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 export async function fetchReviewsApi(productId) {
-  const res = await api.get(`/api/reviews/${productId}`);
-  const data = unwrapApi(res.data);
-  return Array.isArray(data) ? data : data?.reviews ?? [];
+  try {
+    const res = await apiClient.get(`/api/reviews/${productId}`);
+    const data = unwrap(res);
+    return Array.isArray(data) ? data : data?.reviews ?? [];
+  } catch (error) {
+    throw normalizeApiError(error);
+  }
 }
 
 export async function createReviewApi(payload) {
-  const res = await api.post("/api/reviews", payload);
-  return unwrapApi(res.data);
+  try {
+    const res = await apiClient.post("/api/reviews", payload);
+    return unwrap(res);
+  } catch (error) {
+    throw normalizeApiError(error);
+  }
 }

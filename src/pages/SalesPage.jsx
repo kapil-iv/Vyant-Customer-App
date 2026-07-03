@@ -99,9 +99,9 @@ export function SalesPage() {
                 {formatDate(sale.startsAt)} to {formatDate(sale.endsAt)}
               </p>
 
-              {Array.isArray(sale.productIds) && sale.productIds.length ? (
+              {Array.isArray(sale.productIds) && sale.productIds.filter(p => p.status === 'active').length ? (
                 <div className="grid grid-cols-2 gap-4 pt-3 md:grid-cols-4">
-                  {sale.productIds.map((product) => (
+                  {sale.productIds.filter(p => p.status === 'active').map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </div>

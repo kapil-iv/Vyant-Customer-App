@@ -18,6 +18,7 @@ import { CheckoutResultPage } from "../pages/CheckoutResultPage";
 import { InfluencerPage } from "../pages/InfluencerPage";
 import { ShopsPage } from "../pages/ShopsPage";
 import { ShopDetailPage } from "../pages/ShopDetailPage";
+import { VendorApplicationPage } from "../pages/VendorApplicationPage";
 
 export const appRouter = createBrowserRouter([
   {
@@ -28,7 +29,9 @@ export const appRouter = createBrowserRouter([
       { path: "sales", element: <SalesPage /> },
       { path: "shops", element: <ShopsPage /> },
       { path: "shops/:shopId", element: <ShopDetailPage /> },
-      { path: "influencer", element: <InfluencerPage /> },
+      { path: "become-seller", element: <VendorApplicationPage /> },
+      { path: "/category/:category", element: <ProductListPage /> },
+      { path: "/search", element: <ProductListPage /> },
       { path: "products", element: <ProductListPage /> },
       { path: "products/:id", element: <ProductDetailPage /> },
       { path: "login", element: <LoginPage /> },

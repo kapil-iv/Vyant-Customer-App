@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../../../shared/components/Loader";
 import { EmptyState } from "../../../shared/components/EmptyState";
-import { fetchOrdersApi } from "../orderApi";
+import { fetchOrders } from "../api";
 import { Price } from "../../../shared/components/Price";
 
 export function getStatusColor(status) {
@@ -21,7 +21,7 @@ export function OrdersPage() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetchOrdersApi()
+    fetchOrders()
       .then(setOrders)
       .finally(() => setLoading(false));
   }, []);

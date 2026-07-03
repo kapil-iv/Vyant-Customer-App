@@ -10,6 +10,7 @@ export function CartPage() {
   const navigate = useNavigate();
   const items = useSelector((state) => state.cart.items);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const selectedItems = items.filter((item) => item.selected !== false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -17,7 +18,7 @@ export function CartPage() {
     }
   }, [dispatch, isAuthenticated]);
 
-  const subtotal = items.reduce((total, item) => {
+  const subtotal = selectedItems.reduce((total, item) => {
     const price = item.product.discountPrice ?? item.product.price;
     return total + price * item.quantity;
   }, 0);
@@ -58,7 +59,7 @@ export function CartPage() {
             <h2 className="text-lg font-bold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-vy-muted">Subtotal ({items.length} items)</span>
+                <span className="text-vy-muted">Subtotal ({selectedItems.length} selected)</span>
                 <span className="font-medium"><Price value={subtotal} /></span>
               </div>
               <div className="flex justify-between">
@@ -76,7 +77,12 @@ export function CartPage() {
 
             <button
               className="mt-6 w-full rounded-md bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
-              onClick={() => navigate("/checkout")}
+              onClick={() =>
+                navigate("/checkout", {
+                  state: { selectedCartItemIds: selectedItems.map((item) => item._id || item.cartItemId) }
+                })
+              }
+              disabled={!selectedItems.length}
             >
               Proceed to Checkout
             </button>

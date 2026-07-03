@@ -25,7 +25,7 @@ import {
   X
 } from "lucide-react";
 import { logout } from "../../features/auth/authSlice";
-import { fetchActiveTheme } from "../../features/home/api";
+import { fetchActiveTheme, fetchCategories } from "../../features/home/api";
 import { applyThemeTokens, getStoredThemeMode, toggleThemeMode as toggleThemeRuntime } from "../../features/home/themeRuntime";
 import { Footer } from "./Footer";
 import { ScrollToTop } from "./ScrollToTop";
@@ -44,8 +44,12 @@ export function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoriesMenuOpen, setCategoriesMenuOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [mobileExploreOpen, setMobileExploreOpen] = useState(false);
+  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [theme, setTheme] = useState(() => getStoredThemeMode());
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   const menuRef = useRef(null);
   const categoriesRef = useRef(null);
@@ -61,18 +65,25 @@ export function AppShell() {
     // Explicitly sync tailwind CSS dark mode class with the application's runtime mode on fast loads
     if (getStoredThemeMode() === "dark") document.documentElement.classList.add("dark");
 
-    async function loadActiveTheme() {
+    async function loadInitialData() {
       try {
-        const activeTheme = await fetchActiveTheme();
+        setCategoriesLoading(true);
+        const [activeTheme, cats] = await Promise.all([fetchActiveTheme(), fetchCategories()]);
         if (!mounted) return;
         applyThemeTokens(activeTheme?.tokens || undefined);
+        setCategories(cats || []);
       } catch {
         applyThemeTokens(undefined);
+      } finally {
+        if (mounted) setCategoriesLoading(false);
       }
     }
 
-    loadActiveTheme();
-    const poll = setInterval(loadActiveTheme, 30000);
+    loadInitialData();
+    const poll = setInterval(async () => {
+      const activeTheme = await fetchActiveTheme();
+      if (mounted) applyThemeTokens(activeTheme?.tokens || undefined);
+    }, 30000);
     return () => {
       mounted = false;
       clearInterval(poll);
@@ -159,24 +170,46 @@ export function AppShell() {
                   <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
                     Products
                   </div>
-                  <NavLink to="/products?category=men" onClick={() => setCategoriesMenuOpen(false)} className={profileActionClass}>
-                    Men's Collection
-                  </NavLink>
-                  <NavLink to="/products?category=women" onClick={() => setCategoriesMenuOpen(false)} className={profileActionClass}>
-                    Women's Collection
-                  </NavLink>
-                  <NavLink to="/products?category=kids" onClick={() => setCategoriesMenuOpen(false)} className={profileActionClass}>
-                    Kids' Collection
-                  </NavLink>
+
+                  {categoriesLoading ? (
+                    <div className="px-3 py-2 text-xs text-vy-muted animate-pulse">
+                      Loading...
+                    </div>
+                  ) : (
+                    <div className="max-h-[120px] overflow-y-auto ">
+                      {categories.map((cat) => (
+                        <NavLink
+                          key={cat}
+                          to={`/products?category=${cat}`}
+                          onClick={() => setCategoriesMenuOpen(false)}
+                          className={profileActionClass}
+                        >
+                          <span className="capitalize">{cat}</span> Collection
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+
                   <div className="my-1 border-t border-vy-border" />
+
                   <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
                     Explore
                   </div>
-                  <NavLink to="/shops" onClick={() => setCategoriesMenuOpen(false)} className={profileActionClass}>
+
+                  <NavLink
+                    to="/shops"
+                    onClick={() => setCategoriesMenuOpen(false)}
+                    className={profileActionClass}
+                  >
                     <Store size={15} />
                     Directory of Shops
                   </NavLink>
-                  <NavLink to="/influencer" onClick={() => setCategoriesMenuOpen(false)} className={profileActionClass}>
+
+                  <NavLink
+                    to="/influencer"
+                    onClick={() => setCategoriesMenuOpen(false)}
+                    className={profileActionClass}
+                  >
                     <Sparkles size={15} />
                     Influencers
                   </NavLink>
@@ -300,7 +333,7 @@ export function AppShell() {
         </div>
 
         {mobileNavOpen ? (
-          <div className="border-t border-vy-border bg-vy-surface px-4 pb-3 pt-2 md:hidden">
+          <div className="max-h-[70vh] overflow-y-auto border-t border-vy-border bg-vy-surface px-4 pb-3 pt-2 md:hidden">
             <div className="grid gap-2">
               {mainNav.map((item) => {
                 const Icon = item.icon;
@@ -318,28 +351,61 @@ export function AppShell() {
                 );
               })}
 
-              <div className="mt-2 rounded-xl border border-vy-border bg-vy-surface-muted p-3">
-                <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
-                  Categories
-                </div>
-                <div className="grid gap-1">
-                  <NavLink to="/products?category=men" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>Men's Collection</NavLink>
-                  <NavLink to="/products?category=women" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>Women's Collection</NavLink>
-                  <NavLink to="/products?category=kids" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>Kids' Collection</NavLink>
-                </div>
-                <div className="my-3 border-t border-vy-border" />
-                <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
+              <button
+                type="button"
+                onClick={() => setMobileExploreOpen((prev) => !prev)}
+                className="flex items-center justify-between rounded-xl border border-vy-border bg-vy-surface-muted px-3 py-2 text-sm font-semibold"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Sparkles size={15} />
                   Explore
+                </span>
+                <ChevronDown size={15} className={`transition-transform ${mobileExploreOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {mobileExploreOpen ? (
+                <div className="rounded-xl border border-vy-border bg-vy-surface-muted p-3">
+                  <div className="grid gap-1">
+                    <NavLink to="/shops" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>
+                      <Store size={15} /> Shops
+                    </NavLink>
+                    <NavLink to="/influencer" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>
+                      <Sparkles size={15} /> Influencers
+                    </NavLink>
+                  </div>
                 </div>
-                <div className="grid gap-1">
-                  <NavLink to="/shops" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>
-                    <Store size={15} /> Shops
-                  </NavLink>
-                  <NavLink to="/influencer" onClick={() => setMobileNavOpen(false)} className={profileActionClass}>
-                    <Sparkles size={15} /> Influencers
-                  </NavLink>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={() => setMobileCategoryOpen((prev) => !prev)}
+                className="flex items-center justify-between rounded-xl border border-vy-border bg-vy-surface-muted px-3 py-2 text-sm font-semibold"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Menu size={15} />
+                  Category
+                </span>
+                <ChevronDown size={15} className={`transition-transform ${mobileCategoryOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {mobileCategoryOpen ? (
+                <div className="rounded-xl border border-vy-border bg-vy-surface-muted p-3">
+                  {/* <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
+                    Categories
+                  </div> */}
+                  <div className="grid gap-1">
+                    {categoriesLoading ? (
+                      <div className="px-3 py-2 text-xs text-vy-muted animate-pulse">Loading...</div>
+                    ) : (
+                      categories.map(cat => (
+                        <NavLink key={cat} to={`/products?category=${cat}`} onClick={() => setMobileNavOpen(false)} className={profileActionClass}>
+                          <span className="capitalize">{cat}</span> Collection
+                        </NavLink>
+                      ))
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           </div>
         ) : null}

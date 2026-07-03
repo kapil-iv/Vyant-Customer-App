@@ -15,6 +15,8 @@
   --vy-text: #0f172a;
   --vy-muted: #64748b;
   --vy-border: #e2e8f0;
+  --vy-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --vy-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 html.dark {
@@ -22,17 +24,28 @@ html.dark {
   --vy-primary: linear-gradient(135deg, #38bdf8, #a78bfa);
   --vy-secondary: #38bdf8;
   --vy-accent: #a78bfa;
-  --vy-bg: #0b0f19;
-  --vy-surface: #111827;
-  --vy-surface-muted: #1f2937;
-  --vy-text: #e5e7eb;
-  --vy-muted: #9ca3af;
-  --vy-border: #1f2937;
+  --vy-bg: #020617; /* Deeper black for premium feel */
+  --vy-surface: #1e293b;
+  --vy-surface-muted: #334155;
+  --vy-text: #f8fafc;
+  --vy-muted: #94a3b8;
+  --vy-border: #334155;
+  --vy-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --vy-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.4);
 }
 
-.bg-primary-gradient {
-  background: var(--vy-primary);
+/* Base Refinements */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: var(--vy-bg);
+  color: var(--vy-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Utilities */
+.bg-primary-gradient { background: var(--vy-primary); }
 
 .text-primary-gradient {
   background: var(--vy-primary);
@@ -41,139 +54,134 @@ html.dark {
   background-clip: text;
 }
 
-/* Base */
+/* ========================= */
+/* 🔥 MODERN CARD SYSTEM      */
+/* ========================= */
 
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: var(--vy-bg);
-  color: var(--vy-text);
-  overflow-x: hidden;
+.vy-card {
+  background: var(--vy-surface);
+  border: 1px solid var(--vy-border);
+  border-radius: 16px; /* Slightly rounder for modern look */
+  box-shadow: var(--vy-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  isolation: isolate;
 }
 
-* {
-  box-sizing: border-box;
+/* Desktop Hover */
+@media (min-width: 1024px) {
+  .vy-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--vy-shadow-hover);
+    border-color: var(--vy-secondary);
+  }
 }
 
-/* Buttons */
-
-button {
-  transition: transform 0.1s ease, opacity 0.2s ease;
-}
-
-button:active {
+/* Mobile Active State */
+.vy-card:active {
   transform: scale(0.98);
 }
 
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* ========================= */
-/* 🔥 CARD SYSTEM UPGRADE */
-/* ========================= */
-
-.vy-card {
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(148, 163, 184, 0.22);
-
-  /* ✅ FIXED SIZE SYSTEM */
-  width: 100%;
-  max-width: 320px;
-  min-height: 200px;
-
-  /* ✅ UI IMPROVEMENTS */
-  padding: 16px;
-  background: var(--vy-surface);
-  border: 1px solid var(--vy-border);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  transition: all 0.25s ease;
+/* Image container within card */
+.vy-card-image-wrapper {
   position: relative;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-}
-
-/* 🔥 subtle hover effect (premium feel) */
-.vy-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 60px rgba(148, 163, 184, 0.28);
-}
-
-/* 🔥 gradient border glow (very subtle, modern SaaS vibe) */
-.vy-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  padding: 1px;
-  background: var(--vy-primary);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.08;
-  pointer-events: none;
-}
-
-/* Prevent flex/grid breaking */
-.vy-card {
-  flex-shrink: 0;
+  border-radius: 12px 12px 0 0;
 }
 
 /* ========================= */
-/* 🧩 OPTIONAL CARD ELEMENTS */
+/* 🔥 TYPOGRAPHY & BUTTONS   */
 /* ========================= */
 
-.vy-card-header {
-  font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 8px;
+.vy-card-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: var(--vy-text);
+  margin-bottom: 0.25rem;
 }
 
-.vy-card-content {
-  flex: 1;
-  font-size: 14px;
-  color: var(--vy-muted);
+.vy-price {
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.025em;
 }
-
-.vy-card-footer {
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ========================= */
-/* 🔥 BUTTON SYSTEM UPGRADE */
-/* ========================= */
 
 .vy-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border-radius: 12px;
   background: var(--vy-primary);
-  color: #fff;
-  font-weight: 700;
-
-  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 20px;
   border: none;
-
+  cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.3);
 }
 
-.vy-primary-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.vy-primary-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+  filter: brightness(1.1);
 }
 
 /* ========================= */
-/* 📦 GRID HELPER (OPTIONAL) */
+/* 📦 GRID SYSTEM (MOBILE OPTIMIZED) */
 /* ========================= */
 
-.vy-card-grid {
+.vy-product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  /* 2 columns on mobile, auto-fill on desktop */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+}
+
+@media (min-width: 640px) {
+  .vy-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .vy-product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+  }
+}
+
+/* Glassmorphism for floating elements (Badges/Wishlist) */
+.vy-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html.dark .vy-glass {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* index.css */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }

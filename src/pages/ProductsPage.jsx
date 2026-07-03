@@ -19,6 +19,8 @@ export function ProductsPage() {
   const filters = {
     search: searchParams.get("search") ?? "",
     category: searchParams.get("category") ?? "",
+    color: searchParams.get("color") ?? "",
+    size: searchParams.get("size") ?? "",
     minPrice: numberParam(searchParams.get("minPrice")),
     maxPrice: numberParam(searchParams.get("maxPrice")),
     sort: searchParams.get("sort") ?? "newest",
@@ -35,6 +37,8 @@ export function ProductsPage() {
 
     if (merged.search) params.set("search", merged.search);
     if (merged.category) params.set("category", merged.category);
+    if (merged.color) params.set("color", merged.color);
+    if (merged.size) params.set("size", merged.size);
     if (merged.minPrice !== "") params.set("minPrice", String(merged.minPrice));
     if (merged.maxPrice !== "") params.set("maxPrice", String(merged.maxPrice));
     if (merged.sort && merged.sort !== "newest") params.set("sort", merged.sort);
@@ -47,7 +51,7 @@ export function ProductsPage() {
     <section className="space-y-4">
       <h1 className="text-2xl font-semibold text-vy-text">Product Catalog</h1>
 
-      <div className="grid grid-cols-1 gap-3 rounded-xl border border-vy-border bg-vy-surface p-4 md:grid-cols-5">
+      <div className="grid grid-cols-1 gap-3 rounded-xl border border-vy-border bg-vy-surface p-4 md:grid-cols-7">
         <input
           value={filters.search}
           onChange={(e) => updateFilter({ search: e.target.value, page: 1 })}
@@ -76,7 +80,24 @@ export function ProductsPage() {
           ))}
         </select>
 
-        <div className="grid grid-cols-2 gap-2">
+        <select value={filters.color} onChange={(e) => updateFilter({ color: e.target.value, page: 1 })} className="rounded-md border border-vy-border px-3 py-2 text-sm">
+          <option value="">All Colors</option>
+          <option value="black">Black</option>
+          <option value="white">White</option>
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+          <option value="green">Green</option>
+        </select>
+
+        <select value={filters.size} onChange={(e) => updateFilter({ size: e.target.value, page: 1 })} className="rounded-md border border-vy-border px-3 py-2 text-sm">
+          <option value="">All Sizes</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+        </select>
+
+        <div className="grid grid-cols-2 gap-2 md:col-span-1">
           <input
             type="number"
             min={0}

@@ -13,7 +13,7 @@ export function OrderSuccessPage() {
         <Link to="/" className="rounded-md border border-vy-border px-3 py-2 text-sm text-vy-muted">
           Continue Shopping
         </Link>
-        <Link to={`/orders/track/${id}`} className="rounded-md bg-slate-900 px-3 py-2 text-sm text-white">
+        <Link to={`/orders/${id}`} className="rounded-md bg-slate-900 px-3 py-2 text-sm text-white">
           Track Order
         </Link>
       </div>

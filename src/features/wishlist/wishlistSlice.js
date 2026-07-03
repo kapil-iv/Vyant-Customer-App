@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addWishlistApi, getWishlistApi, removeWishlistApi, wishlistError } from "./wishlistApi";
+import { addWishlist, fetchWishlist, removeWishlist } from "./api";
 
 const initialState = {
   items: [],
@@ -16,27 +16,27 @@ function applyList(state, payload) {
 
 export const fetchWishlistThunk = createAsyncThunk("wishlist/fetch", async (_, { rejectWithValue }) => {
   try {
-    return await getWishlistApi();
+    return await fetchWishlist();
   } catch (e) {
-    return rejectWithValue(wishlistError(e).message);
+    return rejectWithValue(e.message);
   }
 });
 
 export const addWishlistThunk = createAsyncThunk("wishlist/add", async (productId, { rejectWithValue }) => {
   try {
-    await addWishlistApi(productId);
-    return await getWishlistApi();
+    await addWishlist(productId);
+    return await fetchWishlist();
   } catch (e) {
-    return rejectWithValue(wishlistError(e).message);
+    return rejectWithValue(e.message);
   }
 });
 
 export const removeWishlistThunk = createAsyncThunk("wishlist/remove", async (productId, { rejectWithValue }) => {
   try {
-    await removeWishlistApi(productId);
-    return await getWishlistApi();
+    await removeWishlist(productId);
+    return await fetchWishlist();
   } catch (e) {
-    return rejectWithValue(wishlistError(e).message);
+    return rejectWithValue(e.message);
   }
 });
 

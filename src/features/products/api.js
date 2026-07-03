@@ -1,4 +1,4 @@
-import { apiClient, normalizeApiError } from "../../lib/apiClient";
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 export const PRODUCT_SORTS = [
   { value: "newest", label: "Newest" },
@@ -60,7 +60,15 @@ export function applyProductFilters(products, filters) {
     const matchesCategory = category ? productCategory === category : true;
     const matchesPrice = price >= minPrice && price <= maxPrice;
 
-    return matchesSearch && matchesCategory && matchesPrice;
+    // Explicit color and size filter handling on client
+    const selectedColor = String(filters.color || "").trim().toLowerCase();
+    const selectedSize = String(filters.size || "").trim().toUpperCase();
+
+    const matchesColor = selectedColor ? safeArray(product?.colors).some(c => String(c).toLowerCase() === selectedColor) : true;
+    const matchesSize = selectedSize ? safeArray(product?.sizes).some(s => String(s).toUpperCase() === selectedSize) : true;
+    const isActive = product?.status === "active";
+
+    return matchesSearch && matchesCategory && matchesPrice && matchesColor && matchesSize && isActive;
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -97,16 +105,21 @@ export async function fetchProducts(filters) {
   const params = {
     q: filters.search || undefined,
     category: filters.category || undefined,
+    colors: filters.color || undefined,
+    sizes: filters.size || undefined,
     minPrice: filters.minPrice || undefined,
     maxPrice: filters.maxPrice || undefined,
     sort: filters.sort || undefined,
     page: filters.page || 1,
-    limit: filters.limit || 12
+    limit: filters.limit || 12,
+    status: "active"
   };
 
   try {
     const response = await apiClient.get("/api/search/products", { params });
-    const items = normalizeProductList(response.data);
+    const data = unwrap(response);
+    const items = Array.isArray(data) ? data : data?.products ?? data?.items ?? [];
+
     return {
       items,
       pagination: normalizePagination(response.data, items.length)
@@ -114,7 +127,8 @@ export async function fetchProducts(filters) {
   } catch (searchError) {
     try {
       const fallbackResponse = await apiClient.get("/api/products");
-      const allProducts = normalizeProductList(fallbackResponse.data);
+      const data = unwrap(fallbackResponse);
+      const allProducts = Array.isArray(data) ? data : data?.products ?? data?.items ?? [];
       const filtered = applyProductFilters(allProducts, filters);
       const paged = paginateProducts(filtered, filters.page, filters.limit);
       return {
@@ -135,19 +149,24 @@ export async function fetchProducts(filters) {
 export async function fetchCategories() {
   try {
     const response = await apiClient.get("/api/products/facets");
-    const categories = safeArray(response.data?.data?.categories ?? response.data?.categories)
+    const data = unwrap(response);
+    const categories = safeArray(data?.categories ?? data)
       .map((item) => String(item).trim())
       .filter(Boolean);
 
     return Array.from(new Set(categories));
   } catch {
     const response = await apiClient.get("/api/products");
-    const categories = normalizeProductList(response.data)
+    const data = unwrap(response);
+    const allProducts = Array.isArray(data) ? data : data?.products ?? [];
+    const categories = allProducts
       .map((product) => String(product?.category ?? "").trim())
       .filter(Boolean);
     return Array.from(new Set(categories));
   }
 }
+
+export const fetchFacets = fetchCategories;
 
 export function normalizeProduct(payload) {
   return payload?.data?.product ?? payload?.product ?? payload?.data ?? payload;
@@ -156,7 +175,9 @@ export function normalizeProduct(payload) {
 export async function fetchProductById(id) {
   try {
     const response = await apiClient.get(`/api/products/${id}`);
-    const product = normalizeProduct(response.data);
+    const data = unwrap(response);
+    const product = data?.product ?? data;
+
     if (!product?._id) {
       throw new Error("Product not found");
     }

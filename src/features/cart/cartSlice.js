@@ -22,21 +22,36 @@ export const fetchCartThunk = createAsyncThunk("cart/fetchCart", async (_, { rej
 
 export const addToCartThunk = createAsyncThunk("cart/addToCart", async (payload, { rejectWithValue, dispatch }) => {
   try {
-    const apiPayload = { productId: payload.product._id, quantity: payload.quantity, size: payload.selectedSize, color: payload.selectedColor };
+    const apiPayload = {
+      productId: payload.product._id,
+      quantity: payload.quantity,
+      selectedSize: payload.selectedSize,
+      selectedColor: payload.selectedColor,
+      selectedVolume: payload.selectedVolume
+    };
     const response = await addToCartApi(apiPayload);
     await dispatch(fetchCartThunk());
     return response;
   } catch (error) { return rejectWithValue(error.message); }
 });
 
-export const updateCartItemThunk = createAsyncThunk("cart/updateCartItem", async ({ cartItemId, quantity, size, color }, { rejectWithValue, dispatch }) => {
-  try {
-    const response = await updateCartItemApi(cartItemId, { quantity, size, color });
-    await dispatch(fetchCartThunk());
-    return response;
+export const updateCartItemThunk = createAsyncThunk(
+  "cart/updateCartItem",
+  async ({ cartItemId, quantity, selectedSize, selectedColor, selected }, { rejectWithValue, dispatch }) => {
+    try {
+      const payload = {};
+      if (quantity !== undefined) payload.quantity = quantity;
+      if (selectedSize !== undefined) payload.selectedSize = selectedSize;
+      if (selectedColor !== undefined) payload.selectedColor = selectedColor;
+      if (selectedVolume !== undefined) payload.selectedVolume = selectedVolume;
+      if (selected !== undefined) payload.selected = selected;
+      const response = await updateCartItemApi(cartItemId, payload);
+      await dispatch(fetchCartThunk());
+      return response;
+    }
+    catch (error) { return rejectWithValue(error.message); }
   }
-  catch (error) { return rejectWithValue(error.message); }
-});
+);
 
 export const removeFromCartThunk = createAsyncThunk("cart/removeFromCart", async (cartItemId, { rejectWithValue, dispatch }) => {
   try {
@@ -54,8 +69,14 @@ export const clearCartThunk = createAsyncThunk("cart/clearCart", async (_, { rej
 
 export const mergeCartThunk = createAsyncThunk("cart/mergeCart", async (localItems, { rejectWithValue }) => {
   try {
-    const formattedItems = localItems.map(item => ({ productId: item.product._id, quantity: item.quantity, size: item.selectedSize, color: item.selectedColor }));
-    const response = await mergeCartApi({ items: formattedItems }); return response;
+    const formattedItems = localItems.map((item) => ({
+      productId: item.product._id,
+      quantity: item.quantity,
+      selectedSize: item.selectedSize,
+      selectedColor: item.selectedColor,
+      selectedVolume: item.selectedVolume
+    }));
+    const response = await mergeCartApi({ guestItems: formattedItems }); return response;
   } catch (error) { return rejectWithValue(error.message); }
 });
 
@@ -64,11 +85,25 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addLocalItem: (state, action) => {
-      const { product, quantity = 1, selectedSize, selectedColor } = action.payload;
-      const cartItemId = `${product._id}-${selectedSize || 'none'}-${selectedColor || 'none'}`;
+      const { product, quantity = 1, selectedSize, selectedColor, selectedVolume } = action.payload;
+      const cartItemId = `${product._id}-${selectedSize || 'none'}-${selectedColor || 'none'}-${selectedVolume || 'none'}`;
       const existingItemIndex = state.items.findIndex(item => item.cartItemId === cartItemId);
       if (existingItemIndex >= 0) { state.items[existingItemIndex].quantity += quantity; }
-      else { state.items.push({ cartItemId, _id: cartItemId, product, quantity, selectedSize, selectedColor, size: selectedSize, color: selectedColor }); }
+      else {
+        state.items.push({
+          cartItemId,
+          _id: cartItemId,
+          product,
+          quantity,
+          selectedSize,
+          selectedColor,
+          selectedVolume,
+          selected: true,
+          size: selectedSize,
+          color: selectedColor,
+          volume: selectedVolume
+        });
+      }
     },
     removeLocalItem: (state, action) => {
       const cartItemId = action.payload;
@@ -81,6 +116,11 @@ const cartSlice = createSlice({
         if (quantity <= 0) { state.items = state.items.filter(i => i.cartItemId !== cartItemId && i._id !== cartItemId); }
         else { item.quantity = quantity; }
       }
+    },
+    updateLocalItemSelection: (state, action) => {
+      const { cartItemId, selected } = action.payload;
+      const item = state.items.find((entry) => entry.cartItemId === cartItemId || entry._id === cartItemId);
+      if (item) item.selected = Boolean(selected);
     },
     clearLocalCart: (state) => { state.items = []; }
   },
@@ -104,5 +144,11 @@ const cartSlice = createSlice({
   }
 });
 
-export const { addLocalItem, removeLocalItem, updateLocalItemQuantity, clearLocalCart } = cartSlice.actions;
+export const {
+  addLocalItem,
+  removeLocalItem,
+  updateLocalItemQuantity,
+  updateLocalItemSelection,
+  clearLocalCart
+} = cartSlice.actions;
 export default cartSlice.reducer;

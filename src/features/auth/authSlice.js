@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginApi, registerApi } from "./authApi";
+import { loginCustomer, registerCustomer } from "./api";
 
 const initialPersisted = (() => {
   const token = sessionStorage.getItem("vyant_auth_token");
@@ -17,7 +17,7 @@ const initialState = {
 
 export const loginThunk = createAsyncThunk("auth/login", async (payload, { rejectWithValue }) => {
   try {
-    return await loginApi(payload);
+    return await loginCustomer(payload);
   } catch (error) {
     return rejectWithValue(error.message);
   }
@@ -25,7 +25,7 @@ export const loginThunk = createAsyncThunk("auth/login", async (payload, { rejec
 
 export const registerThunk = createAsyncThunk("auth/register", async (payload, { rejectWithValue }) => {
   try {
-    return await registerApi(payload);
+    return await registerCustomer(payload);
   } catch (error) {
     return rejectWithValue(error.message);
   }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AddressForm } from "../components/AddressForm";
-import { createAddressApi, deleteAddressApi, fetchAddressesApi } from "../addressApi";
+import { createAddress, deleteAddress, fetchAddresses } from "../../addresses/api";
 
 export function AddressBookPage() {
   const [items, setItems] = useState([]);
@@ -8,7 +8,7 @@ export function AddressBookPage() {
 
   async function load() {
     setLoading(true);
-    const data = await fetchAddressesApi();
+    const data = await fetchAddresses();
     setItems(data);
     setLoading(false);
   }
@@ -26,11 +26,11 @@ export function AddressBookPage() {
           <article key={a._id} className="rounded border bg-vy-surface p-3 text-sm">
             <p className="font-medium">{a.fullName} | {a.phone}</p>
             <p>{a.line1}, {a.city}, {a.state} - {a.pincode}</p>
-            <button className="mt-2 rounded border px-2 py-1 text-xs" onClick={async () => { await deleteAddressApi(a._id); await load(); }}>Delete</button>
+            <button className="mt-2 rounded border px-2 py-1 text-xs" onClick={async () => { await deleteAddress(a._id); await load(); }}>Delete</button>
           </article>
         ))}
       </div>
-      <AddressForm onSubmit={async (payload) => { await createAddressApi(payload); await load(); }} />
+      <AddressForm onSubmit={async (payload) => { await createAddress(payload); await load(); }} />
     </section>
   );
 }

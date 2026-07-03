@@ -4,31 +4,26 @@ import { buildMockVerifyPayload, buildOrderPayload } from "../features/checkout/
 describe("checkout payload", () => {
   it("builds order payload from cart", () => {
     const payload = buildOrderPayload({
-      addressId: "a1",
+      shippingAddress: { fullName: "A", phone: "9876543210", email: "a@x.com" },
       paymentMethod: "cod",
       cart: {
         items: [
           {
+            _id: "64f8f2a12f9b256d34a6f001",
             product: { _id: "p1" },
             quantity: 2,
             selectedSize: "M",
-            selectedColor: "Blue"
+            selectedColor: "Blue",
+            selected: true
           }
         ]
       }
     });
 
     expect(payload).toEqual({
-      addressId: "a1",
       paymentMethod: "cod",
-      items: [
-        {
-          productId: "p1",
-          quantity: 2,
-          selectedSize: "M",
-          selectedColor: "Blue"
-        }
-      ]
+      shippingAddress: { fullName: "A", phone: "9876543210", email: "a@x.com" },
+      selectedCartItemIds: ["64f8f2a12f9b256d34a6f001"]
     });
   });
 });

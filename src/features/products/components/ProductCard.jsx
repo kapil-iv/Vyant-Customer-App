@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addWishlistThunk, removeWishlistThunk } from "../../wishlist/wishlistSlice";
-import { addToCartThunk, addLocalItem } from "../../cart/cartSlice";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Price } from "../../../shared/components/Price";
 import { useToast } from "../../../shared/components/ToastProvider";
 
@@ -25,14 +24,12 @@ function isShopClosed(product) {
 
 export function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const toast = useToast();
   const isAuthenticated = useSelector((s) => s.auth?.isAuthenticated);
-  const wishlistIds = useSelector((s) => s.wishlist.ids);
-  const cartItems = useSelector((s) => s.cart.items);
-  const [adding, setAdding] = useState(false);
+  const wishlistIds = useSelector((s) => s.wishlist.ids) || [];
 
   const inWishlist = wishlistIds.includes(product._id);
-  const inCart = cartItems.some((item) => item.product?._id === product._id || item.product === product._id);
   const closed = isShopClosed(product);
   const badge = resolveBadge(product);
 
@@ -55,128 +52,90 @@ export function ProductCard({ product }) {
     }
   };
 
-  const handleAddToCart = async (e) => {
+  const handleBuyNow = (e) => {
     e.preventDefault();
-    if (inCart || closed || adding) return;
-    try {
-      setAdding(true);
-      if (isAuthenticated) {
-        await dispatch(addToCartThunk({ product, quantity: 1 })).unwrap();
-      } else {
-        dispatch(addLocalItem({ product, quantity: 1 }));
-      }
-      toast.show("Added to cart.", "success");
-    } catch (err) {
-      toast.show(err?.message || "Add to cart failed.", "error");
-    } finally {
-      setAdding(false);
-    }
+    navigate(`/products/${product._id}`);
   };
 
- return (
-  <article className="vy-card w-full max-w-[280px] sm:max-w-[300px] md:max-w-[320px] overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-0.5 hover:shadow-xl hover:shadow-slate-200/60">
-    
-    <Link to={`/products/${product._id}`}>
-      <div className="relative">
-        <img
-          src={product.images?.[0] ?? ""}
-          alt={product.name}
-          className="aspect-[3/3] w-full rounded-t-[12px] object-cover"
-          loading="lazy"
-        />
-        <span className="absolute left-2 top-2 rounded-full bg-teal-700 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white sm:text-[10px]">
+  return (
+    <article className="group relative flex flex-col w-full max-w-[280px] sm:max-w-[320px] overflow-hidden border border-vy-border bg-vy-surface transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/60 rounded-[12px]">
+      
+      {/* IMAGE SECTION */}
+      <div className="relative aspect-square overflow-hidden bg-slate-50">
+        <Link to={`/products/${product._id}`}>
+          <img
+            src={product.images?.[0] ?? ""}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </Link>
+
+        {/* BADGE (Teal 700 Restored) */}
+        <span className="absolute left-2 top-2 rounded-full bg-teal-700 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm sm:text-[10px]">
           {badge}
         </span>
-      </div>
-    </Link>
 
-    <div className=" p-1">
-      <Link
-        to={`/products/${product._id}`}
-        className="line-clamp-1 text-[13px] sm:text-sm font-bold tracking-tight hover:underline"
-      >
-        {product.name}
-      </Link>
-
-      <p className="text-[11px] sm:text-xs text-vy-muted">
-        {product.category ?? "General"}{" "}
-        {product.shop?.shopName ? `• ${product.shop.shopName}` : ""}
-      </p>
-
-      {/* <p
-        className={`inline-flex w-fit rounded-full px-2 py-0.5 text-[10px] sm:text-[11px] font-semibold ${
-          closed
-            ? "bg-vy-surface-muted text-vy-muted"
-            : "bg-emerald-100 text-emerald-700"
-        }`}
-      >
-        {closed ? "Shop Closed" : "Shop Open"}
-      </p> */}
-
-      <p className="text-sm font-semibold">
-        <Price value={product.discountPrice ?? product.price} />
-      </p>
-
-      {/* 🔥 RESPONSIVE BUTTON SECTION */}
-      <div className="flex flex-row sm:flex-row gap-2 pt-2">
-        
-        {/* PRIMARY CTA */}
+        {/* FLOATING WISHLIST (UX FIX: Better for Mobile thumb reach) */}
         <button
-          className={`
-            w-full flex items-center justify-center gap-2
-            rounded-[12px] px-3 py-2.5 text-[12px] sm:text-xs font-semibold
-            transition-all duration-200
-            ${
-              closed
-                ? "bg-gray-400 text-white cursor-not-allowed"
-                : inCart
-                ? "bg-green-600 text-white"
-                : "bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:opacity-90 active:scale-[0.98]"
-            }
-          `}
-          onClick={handleAddToCart}
-          disabled={closed || adding}
-        >
-          {adding && (
-            <span className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-          )}
-
-          {closed
-            ? "Unavailable"
-            : adding
-            ? "Processing"
-            : inCart
-            ? "Added"
-            : <ShoppingCart className="h-4 w-4" />}
-        </button>
-
-        {/* WISHLIST BUTTON */}
-        <button
-          className={`
-            w-full sm:w-auto flex items-center justify-center
-            rounded-[12px] border px-3 py-2.5
-            transition-all duration-200
-            ${
-              inWishlist
-                ? "border-red-200 bg-red-50"
-                : "border-vy-border hover:bg-vy-bg"
-            }
-          `}
           onClick={handleWishlistToggle}
-          aria-label={
-            inWishlist ? "Remove from wishlist" : "Add to wishlist"
-          }
+          className={`absolute right-2 top-2 p-2 rounded-full shadow-md transition-all active:scale-90 ${
+            inWishlist ? "bg-red-50" : "bg-white/90 hover:bg-white"
+          }`}
+          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart
-            className={`h-4 w-4 transition ${
-              inWishlist
-                ? "fill-red-500 text-red-500 scale-110"
-                : "text-vy-muted"
+            className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors ${
+              inWishlist ? "fill-red-500 text-red-500" : "text-slate-400"
             }`}
           />
         </button>
       </div>
-    </div>
-  </article>
-);
+
+      {/* INFO SECTION */}
+      <div className="flex flex-col flex-1 p-3 sm:p-4">
+        <Link
+          to={`/products/${product._id}`}
+          className="line-clamp-1 text-sm sm:text-base font-bold tracking-tight text-slate-800 hover:underline decoration-sky-500 underline-offset-2"
+        >
+          {product.name}
+        </Link>
+
+        <p className="mt-0.5 text-[11px] sm:text-xs text-vy-muted font-medium">
+          {product.category ?? "General"}
+          {product.shop?.shopName ? ` • ${product.shop.shopName}` : ""}
+        </p>
+
+        <div className="mt-3 flex items-center justify-between">
+          <p className="text-base sm:text-lg font-bold text-slate-900">
+            <Price value={product.discountPrice ?? product.price} />
+          </p>
+        </div>
+
+        {/* ACTION BUTTON (Restored Original Gradients) */}
+        <div className="mt-4">
+          <button
+            className={`
+              w-full flex items-center justify-center gap-2
+              rounded-xl px-4 py-3 text-xs font-bold
+              transition-all duration-200
+              ${
+                closed
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:opacity-90 active:scale-[0.97] shadow-lg shadow-sky-100"
+              }
+            `}
+            onClick={handleBuyNow}
+            disabled={closed}
+          >
+            {closed ? (
+              "Unavailable"
+            ) : (
+              <span>Buy Now</span>
+            )}
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 }

@@ -35,3 +35,11 @@ export function normalizeApiError(error) {
 
   return new Error("Unexpected error occurred.");
 }
+
+/**
+ * Standardizes extraction of data from backend response { success: true, data: { ... } }
+ */
+export function unwrap(response) {
+  return response?.data?.data ?? response?.data ?? response;
+}
+

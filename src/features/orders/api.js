@@ -1,8 +1,4 @@
-import { apiClient, normalizeApiError } from "../../lib/apiClient";
-
-function unwrap(payload) {
-  return payload?.data ?? payload;
-}
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 export function normalizeOrders(payload) {
   const data = unwrap(payload);
@@ -25,13 +21,9 @@ export function normalizeOrder(payload) {
 
 export async function fetchOrders() {
   try {
-    try {
-      const response = await apiClient.get("/api/orders");
-      return normalizeOrders(response.data);
-    } catch {
-      const fallback = await apiClient.get("/api/order");
-      return normalizeOrders(fallback.data);
-    }
+    const response = await apiClient.get("/api/orders");
+    const data = unwrap(response);
+    return Array.isArray(data) ? data : data?.orders ?? [];
   } catch (error) {
     throw normalizeApiError(error);
   }
@@ -39,13 +31,9 @@ export async function fetchOrders() {
 
 export async function fetchOrderTimeline(orderId) {
   try {
-    try {
-      const response = await apiClient.get(`/api/orders/${orderId}/timeline`);
-      return normalizeTimeline(response.data);
-    } catch {
-      const fallback = await apiClient.get(`/api/order/${orderId}/timeline`);
-      return normalizeTimeline(fallback.data);
-    }
+    const response = await apiClient.get(`/api/orders/${orderId}/timeline`);
+    const data = unwrap(response);
+    return Array.isArray(data) ? data : data?.events ?? [];
   } catch {
     return [];
   }
@@ -53,13 +41,9 @@ export async function fetchOrderTimeline(orderId) {
 
 export async function fetchOrderById(orderId) {
   try {
-    try {
-      const response = await apiClient.get(`/api/orders/${orderId}`);
-      return normalizeOrder(response.data);
-    } catch {
-      const fallback = await apiClient.get(`/api/order/${orderId}`);
-      return normalizeOrder(fallback.data);
-    }
+    const response = await apiClient.get(`/api/orders/${orderId}`);
+    const data = unwrap(response);
+    return data?.order ?? data;
   } catch (error) {
     throw normalizeApiError(error);
   }
@@ -68,7 +52,16 @@ export async function fetchOrderById(orderId) {
 export async function requestOrderReturn(orderId, payload) {
   try {
     const response = await apiClient.post(`/api/orders/${orderId}/return`, payload);
-    return unwrap(response.data);
+    return unwrap(response);
+  } catch (error) {
+    throw normalizeApiError(error);
+  }
+}
+
+export async function cancelOrder(orderId) {
+  try {
+    const response = await apiClient.post(`/api/orders/${orderId}/cancel`);
+    return unwrap(response);
   } catch (error) {
     throw normalizeApiError(error);
   }

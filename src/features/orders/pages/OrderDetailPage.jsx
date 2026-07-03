@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Loader } from "../../../shared/components/Loader";
 import { OrderTimeline } from "../components/OrderTimeline";
 import { ReturnOrderForm } from "../components/ReturnOrderForm";
-import { cancelOrderApi, fetchOrderByIdApi, fetchOrderTimelineApi, returnOrderApi } from "../orderApi";
+import { cancelOrder, fetchOrderById, fetchOrderTimeline, requestOrderReturn } from "../api";
 import { Price } from "../../../shared/components/Price";
 import { getStatusColor } from "./OrdersPage";
 
@@ -16,7 +16,7 @@ export function OrderDetailPage() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [detail, timelineResponse] = await Promise.all([fetchOrderByIdApi(id), fetchOrderTimelineApi(id)]);
+    const [detail, timelineResponse] = await Promise.all([fetchOrderById(id), fetchOrderTimeline(id)]);
     setOrder(detail);
     setTimelineData(timelineResponse || { timeline: [], trackingStatus: "", status: "" });
     setLoading(false);
@@ -111,7 +111,7 @@ export function OrderDetailPage() {
                 className="w-full rounded-xl border border-red-200 bg-vy-surface px-4 py-3 text-sm font-bold text-red-600 shadow-sm transition-all hover:border-red-300 hover:bg-red-50"
                 onClick={async () => {
                   if (window.confirm("Are you absolutely sure you want to cancel this order?")) {
-                    await cancelOrderApi(id);
+                    await cancelOrder(id);
                     await load();
                   }
                 }}
@@ -128,7 +128,7 @@ export function OrderDetailPage() {
                 submitting={submitting}
                 onSubmit={async (payload) => {
                   setSubmitting(true);
-                  await returnOrderApi(id, payload);
+                  await requestOrderReturn(id, payload);
                   setSubmitting(false);
                   await load();
                 }}

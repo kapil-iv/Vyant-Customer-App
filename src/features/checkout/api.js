@@ -1,8 +1,4 @@
-import { apiClient, normalizeApiError } from "../../lib/apiClient";
-
-function unwrap(payload) {
-  return payload?.data ?? payload;
-}
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 async function postWithAliases(paths, payload) {
   let lastError = null;
@@ -19,16 +15,12 @@ async function postWithAliases(paths, payload) {
   throw lastError;
 }
 
-export function buildOrderPayload({ cart, addressId, paymentMethod }) {
+export function buildOrderPayload({ cart, shippingAddress, paymentMethod }) {
+  const selectedItems = (cart?.items ?? []).filter((item) => item.selected !== false);
   return {
-    addressId,
     paymentMethod,
-    items: (cart?.items ?? []).map((item) => ({
-      productId: item.product?._id ?? item.productId,
-      quantity: item.quantity,
-      selectedSize: item.selectedSize,
-      selectedColor: item.selectedColor
-    }))
+    shippingAddress,
+    selectedCartItemIds: selectedItems.map((item) => item._id || item.cartItemId).filter(Boolean)
   };
 }
 
@@ -87,47 +79,30 @@ export async function fetchPaymentMethods(cartValue = 0, pincode = "") {
 
 export async function createPaymentOrder(amount) {
   try {
-    const safeAmount = Math.round(Number(amount) || 0);
-    return await postWithAliases(["/api/payment/create-order", "/api/payments/create-order"], { amount: safeAmount });
+    const safeAmount = Number(Number(amount || 0).toFixed(2));
+    const response = await apiClient.post("/api/payment/create-order", { amount: safeAmount, currency: "INR" });
+    return unwrap(response);
   } catch (error) {
     throw normalizeApiError(error);
   }
 }
 
-export function buildMockVerifyPayload(paymentOrder, amount) {
-  const orderId =
-    paymentOrder?.orderId ??
-    paymentOrder?.order_id ??
-    paymentOrder?.razorpay_order_id ??
-    paymentOrder?.id;
-
-  if (!orderId) {
-    throw new Error("Payment order id missing from create-order response");
-  }
-
-  const paymentId = paymentOrder?.paymentId ?? paymentOrder?.razorpay_payment_id ?? `pay_mock_${Date.now()}`;
-  const signature = paymentOrder?.signature ?? paymentOrder?.razorpay_signature ?? "mock_signature";
-  const verifyAmount = Math.round(Number(paymentOrder?.amount ?? amount) || 0);
-
-  return {
-    razorpay_order_id: orderId,
-    razorpay_payment_id: paymentId,
-    razorpay_signature: signature,
-    amount: Number.isFinite(verifyAmount) ? verifyAmount : Math.round(Number(amount) || 0)
-  };
-}
-
 export async function verifyPayment(payload) {
   try {
-    return await postWithAliases(["/api/payment/verify", "/api/payments/verify"], payload);
+    const response = await apiClient.post("/api/payment/verify", payload);
+    return unwrap(response);
   } catch (error) {
     throw normalizeApiError(error);
   }
 }
 
 export async function placeOrder(payload) {
+  if (!payload?.shippingAddress?.email || !payload?.shippingAddress?.phone) {
+    throw new Error("Please provide a valid email and phone number in the shipping address.");
+  }
   try {
-    const data = await postWithAliases(["/api/orders", "/api/order"], payload);
+    const response = await apiClient.post("/api/orders", payload);
+    const data = unwrap(response);
     return data?.order ?? data;
   } catch (error) {
     throw normalizeApiError(error);

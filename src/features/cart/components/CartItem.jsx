@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   removeLocalItem,
   updateLocalItemQuantity,
+  updateLocalItemSelection,
   removeFromCartThunk,
   updateCartItemThunk
 } from "../cartSlice";
@@ -15,35 +16,56 @@ export function CartItem({ item }) {
 
   // Destructuring based on your new object structure
   const { _id: cartItemId, product, quantity } = item;
-  
+
   // Destructuring product details
-  const { 
-    _id: productId, 
-    name, 
-    images, 
-    price, 
-    originalPrice, 
+  const {
+    _id: productId,
+    name,
+    images,
+    price,
+    originalPrice,
     stock,
     // Note: selectedSize/Color handle karne ke liye agar object mein bad mein add hon toh:
-    selectedSize,
-    selectedColor 
+    selectedSize: productSelectedSize,
+    selectedColor: productSelectedColor,
+    selectedVolume: productSelectedVolume
   } = product || {};
+  const selectedSize = item.selectedSize || item.size || productSelectedSize;
+  const selectedColor = item.selectedColor || item.color || productSelectedColor;
+  const selectedVolume = item.selectedVolume || item.volume || productSelectedVolume;
+  const selected = item.selected !== false;
+
 
   const handleQuantityChange = (newQuantity) => {
     // Stock check to prevent increasing beyond limit
-    if (newQuantity > stock) return; 
-    
+    if (newQuantity > stock) return;
+
     if (isAuthenticated) {
-      dispatch(updateCartItemThunk({ 
-        cartItemId: cartItemId, 
-        quantity: newQuantity 
+      dispatch(updateCartItemThunk({
+        cartItemId: cartItemId,
+        quantity: newQuantity
       }));
     } else {
-      dispatch(updateLocalItemQuantity({ 
-        cartItemId: cartItemId, 
-        quantity: newQuantity 
+      dispatch(updateLocalItemQuantity({
+        cartItemId: cartItemId,
+        quantity: newQuantity
       }));
     }
+  };
+
+  const handleSelectionToggle = (checked) => {
+    if (isAuthenticated) {
+      dispatch(updateCartItemThunk({
+        cartItemId,
+        selected: checked
+      }));
+      return;
+    }
+
+    dispatch(updateLocalItemSelection({
+      cartItemId,
+      selected: checked
+    }));
   };
 
   const handleRemove = () => {
@@ -58,6 +80,14 @@ export function CartItem({ item }) {
 
   return (
     <div className="flex gap-4 border-b border-vy-border py-6 group">
+      <div className="pt-1">
+        <input
+          type="checkbox"
+          aria-label={`Select ${name || "item"} for checkout`}
+          checked={selected}
+          onChange={(event) => handleSelectionToggle(event.target.checked)}
+        />
+      </div>
       {/* Product Image */}
       <Link to={`/products/${productId}`} className="shrink-0">
         <img
@@ -77,7 +107,9 @@ export function CartItem({ item }) {
             <div className="mt-1 flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wider text-vy-muted">
               {selectedSize && <span className="bg-vy-surface-muted px-2 py-0.5 rounded">Size: {selectedSize}</span>}
               {selectedColor && <span className="bg-vy-surface-muted px-2 py-0.5 rounded">Color: {selectedColor}</span>}
+              {selectedVolume && <span className="bg-vy-surface-muted px-2 py-0.5 rounded">Volume: {selectedVolume}</span>}
               <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded">In Stock: {stock}</span>
+
             </div>
           </div>
           <div className="text-right">
@@ -102,9 +134,9 @@ export function CartItem({ item }) {
             >
               <Minus size={16} />
             </button>
-            
+
             <span className="px-4 text-sm font-black text-vy-text">{quantity}</span>
-            
+
             <button
               className="p-1 text-vy-muted hover:bg-vy-surface hover:shadow-sm rounded-md disabled:opacity-30 transition-all"
               onClick={() => handleQuantityChange(quantity + 1)}

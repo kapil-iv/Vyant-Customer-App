@@ -115,6 +115,9 @@ export function Footer() {
 
             <div className="space-y-3">
               <h4 className="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Partner With Us</h4>
+              <Link to="/become-seller" className="flex items-center gap-2 text-orange-500 hover:text-orange-400 font-semibold transition-colors">
+                <Store size={14} /> Become a Seller
+              </Link>
               <Link to="/partner/store-login" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
                 <Store size={14} /> Store Login
               </Link>

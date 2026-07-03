@@ -6,7 +6,7 @@ import { HeroSlider } from "../features/home/components/HeroSlider";
 import { ProductSkeleton } from "../features/products/components/ProductSkeleton";
 import { ProductCard } from "../features/products/components/ProductCard";
 import { FeaturedCarousel } from "../features/home/components/FeaturedCarousel";
-import { fetchActiveTheme, fetchFeaturedProducts, fetchInfluencerHighlights, fetchSaleHighlights } from "../features/home/api";
+import { fetchActiveTheme, fetchCategories, fetchFeaturedProducts, fetchInfluencerHighlights, fetchSaleHighlights } from "../features/home/api";
 import { EmptyState } from "../shared/components/EmptyState";
 import salebanner from "./assets/salebanner.jpg";
 
@@ -41,6 +41,8 @@ export function HomePage() {
     featured: [],
     sales: [],
     influencerCollections: [],
+    categories: [],
+    categoriesLoading: true
   });
 
   const { data: catalogData, loading: catalogLoading, error: catalogError } = useQuery(GET_PRODUCTS, {
@@ -49,37 +51,19 @@ export function HomePage() {
 
   // console.log(catalogData)
 
-  const categoryCards = [
-    {
-      key: "men",
-      title: "Men's Collection",
-      description: "Streetwear, formal, and everyday essentials.",
-      image: "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&q=80"
-    },
-    {
-      key: "women",
-      title: "Women's Collection",
-      description: "Trending styles and exclusive designer picks.",
-      image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80"
-    },
-    {
-      key: "kids",
-      title: "Kids' Collection",
-      description: "Comfort-first styles and vibrant playful prints.",
-      image: "https://images.unsplash.com/photo-1519238263530-99abc11ee0cd?auto=format&fit=crop&q=80"
-    }
-  ];
+
 
   useEffect(() => {
     let active = true;
 
     async function loadHome() {
       try {
-        const [theme, featured, sales, influencer] = await Promise.all([
+        const [theme, featured, sales, influencer, cats] = await Promise.all([
           fetchActiveTheme(),
           fetchFeaturedProducts(),
           fetchSaleHighlights(),
-          fetchInfluencerHighlights(8)
+          fetchInfluencerHighlights(8),
+          fetchCategories()
         ]);
         if (!active) return;
         setState({
@@ -88,6 +72,8 @@ export function HomePage() {
           featured: featured ?? [],
           sales: sales ?? [],
           influencerCollections: influencer?.influencerCollections ?? [],
+          categories: cats || [],
+          categoriesLoading: false
         });
       } catch {
         if (!active) return;
@@ -118,22 +104,33 @@ export function HomePage() {
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Shop By Category</h2>
         </div>
         <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 hide-scrollbar">
-          {categoryCards.map((category) => (
-            <Link
-              key={category.key}
-              to={`/products?category=${category.key}`}
-              className="group relative w-[260px] flex-none snap-center overflow-hidden rounded-[16px] border border-vy-border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[320px]"
-            >
-              <div className="absolute inset-0 h-full w-full">
-                <img src={category.image} alt={category.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity group-hover:opacity-90" />
-              </div>
-              <div className="relative flex h-32 flex-col justify-end p-4 md:h-40">
-                <p className="mb-1 text-xl font-extrabold tracking-tight text-white md:text-2xl">{category.title}</p>
-                <p className="line-clamp-1 text-xs font-medium text-slate-200 md:text-sm">{category.description}</p>
-              </div>
-            </Link>
-          ))}
+          {state.categoriesLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-32 w-[260px] flex-none animate-pulse rounded-[16px] bg-vy-surface-muted md:h-40 md:w-[320px]" />
+            ))
+          ) : (
+            state.categories.map((cat) => (
+              <Link
+                key={cat}
+                to={`/products?category=${cat}`}
+                className="group relative w-[260px] flex-none snap-center overflow-hidden rounded-[16px] border border-vy-border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[320px]"
+              >
+                <div className="absolute inset-0 h-full w-full">
+                  <img
+                    src={`https://picsum.photos/seed/${cat}/400/400`}
+                    alt={cat}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity group-hover:opacity-90" />
+                </div>
+                <div className="relative flex h-32 flex-col justify-end p-4 md:h-40">
+                  <p className="mb-1 text-xl font-extrabold tracking-tight capitalize text-white md:text-2xl">{cat} Collection</p>
+                  <p className="line-clamp-1 text-xs font-medium text-slate-200 md:text-sm">Explore premium {cat} products.</p>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
       </section>
 

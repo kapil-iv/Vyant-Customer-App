@@ -2,7 +2,13 @@ const STORAGE_KEY = "vyant_customer_session";
 
 export function saveSession(session) {
   if (session?.token) {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ token: session.token }));
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        token: session.token,
+        user: session.user || null
+      })
+    );
     sessionStorage.setItem("vyant_auth_token", session.token);
   }
 }

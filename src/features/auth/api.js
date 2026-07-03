@@ -1,13 +1,9 @@
-import { apiClient, normalizeApiError } from "../../lib/apiClient";
-
-function unwrap(payload) {
-  return payload?.data ?? payload;
-}
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 export async function loginCustomer(credentials) {
   try {
     const response = await apiClient.post("/api/auth/login", credentials);
-    const data = unwrap(response.data);
+    const data = unwrap(response);
     if (!data?.token) {
       throw new Error("Login response did not include token.");
     }
@@ -23,7 +19,7 @@ export async function loginCustomer(credentials) {
 export async function registerCustomer(payload) {
   try {
     const response = await apiClient.post("/api/auth/register", { ...payload, role: "customer" });
-    const data = unwrap(response.data);
+    const data = unwrap(response);
     return {
       token: data?.token ?? null,
       user: data?.user ?? null

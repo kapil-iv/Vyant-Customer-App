@@ -1,8 +1,4 @@
-import { apiClient, normalizeApiError } from "../../lib/apiClient";
-
-function unwrap(payload) {
-  return payload?.data ?? payload;
-}
+import { apiClient, normalizeApiError, unwrap } from "../../lib/apiClient";
 
 export function normalizeAddressPayload(payload) {
   return {
@@ -21,7 +17,7 @@ export function normalizeAddressPayload(payload) {
 export async function fetchAddresses() {
   try {
     const response = await apiClient.get("/api/addresses");
-    const data = unwrap(response.data);
+    const data = unwrap(response);
     return Array.isArray(data) ? data : Array.isArray(data?.addresses) ? data.addresses : [];
   } catch (error) {
     throw normalizeApiError(error);
@@ -31,7 +27,7 @@ export async function fetchAddresses() {
 export async function createAddress(payload) {
   try {
     const response = await apiClient.post("/api/addresses", normalizeAddressPayload(payload));
-    return unwrap(response.data);
+    return unwrap(response);
   } catch (error) {
     throw normalizeApiError(error);
   }
@@ -40,7 +36,16 @@ export async function createAddress(payload) {
 export async function updateAddress(addressId, payload) {
   try {
     const response = await apiClient.put(`/api/addresses/${addressId}`, normalizeAddressPayload(payload));
-    return unwrap(response.data);
+    return unwrap(response);
+  } catch (error) {
+    throw normalizeApiError(error);
+  }
+}
+
+export async function deleteAddress(addressId) {
+  try {
+    const response = await apiClient.delete(`/api/addresses/${addressId}`);
+    return unwrap(response);
   } catch (error) {
     throw normalizeApiError(error);
   }

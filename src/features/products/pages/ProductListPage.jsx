@@ -6,7 +6,7 @@ import { Pagination } from "../../../shared/components/Pagination";
 import { ProductCard } from "../components/ProductCard";
 import { ProductFilters } from "../components/ProductFilters";
 import { ProductSort } from "../components/ProductSort";
-import { fetchFacets, fetchProducts } from "../productApi";
+import { fetchFacets, fetchProducts } from "../api";
 
 function ProductGridSkeleton() {
   return (
@@ -71,7 +71,7 @@ export function ProductListPage() {
   useEffect(() => {
     fetchFacets()
       .then((f) => setFacets({ categories: f?.categories ?? [], materialTypes: f?.materialTypes ?? [] }))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
@@ -91,7 +91,7 @@ export function ProductListPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-[260px_1fr]">
-        <aside className="hidden md:block">
+        <aside className="hidden md:block md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] md:overflow-y-auto md:pr-2 md:self-start">
           <ProductFilters filters={filters} categories={facets.categories} materials={facets.materialTypes} onChange={(next) => setFilters((p) => ({ ...p, ...next }))} />
         </aside>
 
@@ -114,7 +114,7 @@ export function ProductListPage() {
 
       {mobileFiltersOpen ? (
         <div className="fixed inset-0 z-[60] bg-black/35 md:hidden">
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-2xl bg-vy-surface p-4">
+          <div className="absolute bottom-0 left-0 right-0 max-h-[80vh] overflow-y-auto rounded-t-2xl bg-vy-surface p-4">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-lg font-bold">Filters</h2>
               <button type="button" className="text-sm font-semibold" onClick={() => setMobileFiltersOpen(false)}>Close</button>

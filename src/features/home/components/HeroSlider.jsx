@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, ShoppingBag, Sparkles, TrendingUp } from "lucide-react";
 
@@ -65,13 +65,6 @@ export function HeroSlider({ theme, fallbackImage }) {
     return "min-h-[500px]";
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isAnimating) nextSlide();
-    }, 5500);
-    return () => clearInterval(timer);
-  }, [currentSlide, isAnimating]);
-
   const goToSlide = (index) => {
     if (!isAnimating && index !== currentSlide) {
       setIsAnimating(true);
@@ -80,21 +73,28 @@ export function HeroSlider({ theme, fallbackImage }) {
     }
   };
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     if (!isAnimating) {
       setIsAnimating(true);
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
       setTimeout(() => setIsAnimating(false), 500);
     }
-  };
+  }, [isAnimating, slides.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     if (!isAnimating) {
       setIsAnimating(true);
       setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
       setTimeout(() => setIsAnimating(false), 500);
     }
-  };
+  }, [isAnimating, slides.length]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isAnimating) nextSlide();
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isAnimating, nextSlide]);
 
   const handleTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
   const handleTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
