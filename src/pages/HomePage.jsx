@@ -8,7 +8,9 @@ import { ProductCard } from "../features/products/components/ProductCard";
 import { FeaturedCarousel } from "../features/home/components/FeaturedCarousel";
 import { fetchActiveTheme, fetchCategories, fetchFeaturedProducts, fetchInfluencerHighlights, fetchSaleHighlights } from "../features/home/api";
 import { EmptyState } from "../shared/components/EmptyState";
-import salebanner from "./assets/salebanner.jpg";
+
+import { InfluencerBanner } from "../components/common/InfluencerBanner";
+import { HomeSidebar } from "../features/home/components/HomeSidebar";
 
 function HomeSkeleton() {
   return (
@@ -87,7 +89,7 @@ export function HomePage() {
     };
   }, []);
 
-  const heroImage = state.theme?.assets?.heroImage || state.theme?.assets?.bannerImage || salebanner || null;
+  const heroImage = state.theme?.assets?.heroImage || state.theme?.assets?.bannerImage || null;
   const heroTitle = state.theme?.name || "Discover curated fashion collections.";
   const heroDescription = state.theme?.description || "Premium clothes and accessories from top collections and creators.";
 
@@ -96,24 +98,34 @@ export function HomePage() {
   }
 
   return (
-    <div className="space-y-10 pb-16 md:space-y-12">
-      <HeroSlider theme={state.theme} fallbackImage={salebanner} />
+    <div className="w-full pb-16">
+      {/* Desktop 2-Column Layout */}
+      <div className="flex flex-col gap-6 pt-6 lg:flex-row lg:items-start">
+        
+        {/* LEFT MAIN CONTENT (Hero + Categories + Products) */}
+        <div className="flex-1 min-w-0 space-y-6 md:space-y-8">
+          <section className="w-full">
+        <HeroSlider
+          theme={state.theme}
+          fallbackImage={null}
+        />
+      </section>
 
-      <section className="space-y-4">
-        <div className="flex items-end justify-between gap-4">
+      <section className="space-y-5">
+        <div className="flex items-center justify-between gap-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Shop By Category</h2>
         </div>
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 hide-scrollbar">
+        <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 hide-scrollbar">
           {state.categoriesLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 w-[260px] flex-none animate-pulse rounded-[16px] bg-vy-surface-muted md:h-40 md:w-[320px]" />
+              <div key={i} className="h-32 w-[220px] flex-none animate-pulse rounded-[16px] bg-vy-surface-muted md:h-40 md:w-[250px]" />
             ))
           ) : (
             state.categories.map((cat) => (
               <Link
                 key={cat}
                 to={`/products?category=${cat}`}
-                className="group relative w-[260px] flex-none snap-center overflow-hidden rounded-[16px] border border-vy-border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[320px]"
+                className="group relative w-[220px] flex-none snap-center overflow-hidden rounded-2xl border border-vy-border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[250px]"
               >
                 <div className="absolute inset-0 h-full w-full">
                   <img
@@ -139,7 +151,7 @@ export function HomePage() {
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Special Offers</h2>
           <Link to="/sales" className="text-sm font-semibold text-vy-muted hover:text-vy-text">All deals</Link>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 content-stretch">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 content-stretch">
           {state.sales.map((sale) => (
             <Link key={sale._id} to="/sales" className="group relative overflow-hidden rounded-xl border border-vy-border bg-vy-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
               <div className="relative h-28 w-full bg-slate-900">
@@ -166,10 +178,14 @@ export function HomePage() {
         </div>
         <FeaturedCarousel products={state.featured.slice(0, 10)} />
       </section>
+      
+      <section className="py-4">
+        <InfluencerBanner />
+      </section>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Influencers Collection</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {state.influencerCollections.map((link) => (
             <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
               <div className="relative h-56 overflow-hidden">
@@ -186,10 +202,18 @@ export function HomePage() {
             </Link>
           ))}
         </div>
-      </section>
+          </section>
+        </div> {/* End Left Main Content */}
 
-      {/* Amazon-like Full Catalog Display at Bottom using Apollo hook */}
-      <section className="space-y-4 pt-10 border-t border-vy-border mt-8">
+        {/* RIGHT SIDEBAR (Promos & Deals) */}
+        <aside className="hidden lg:flex lg:w-[290px] shrink-0 lg:flex-col lg:gap-6 lg:sticky lg:top-6 self-start">
+          <HomeSidebar />
+        </aside>
+
+      </div> {/* End 2-Column Layout */}
+
+      {/* Amazon-like Full Catalog Display at Bottom (Full Width) */}
+      <section className="mt-10 space-y-5 border-t border-vy-border pt-10">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Today's Deals & Explore</h2>
         </div>
