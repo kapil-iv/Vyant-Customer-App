@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronRight } from "lucide-react";
 import { useQuery } from "@apollo/client/react";
 import { GET_PRODUCTS } from "../graphql/queries";
 import { HeroSlider } from "../features/home/components/HeroSlider";
@@ -134,6 +135,23 @@ export function HomePage() {
         </div>
       </section>
 
+        <section className="space-y-4">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Trending Now</h2>
+            <Link to="/products?filter=trending" className="inline-flex items-center gap-0.5 text-sm font-semibold text-violet-500 transition-colors hover:text-violet-600">View All <ChevronRight size={16} strokeWidth={2.5} /></Link>
+          </div>
+
+          <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-8 pt-2 pr-4 md:pr-0">
+              {state.featured.slice(0, 8).map((p) => (
+                <div key={p._id} className="w-[220px] sm:w-[260px] shrink-0 snap-start">
+                  <ProductCard product={p} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Special Offers</h2>
@@ -162,16 +180,19 @@ export function HomePage() {
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
           <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">New Season Essentials</h2>
-          <Link to="/products" className="text-sm font-semibold text-vy-muted hover:text-vy-text">All Products</Link>
+          <Link to="/products" className="inline-flex items-center gap-0.5 text-sm font-semibold text-violet-500 transition-colors hover:text-violet-600">All Products <ChevronRight size={16} strokeWidth={2.5} /></Link>
         </div>
         <FeaturedCarousel products={state.featured.slice(0, 10)} />
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Influencers Collection</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex items-end justify-between gap-4">
+          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Influencers Collection</h2>
+          <Link to="/influencer" className="inline-flex items-center gap-0.5 text-sm font-semibold text-violet-500 transition-colors hover:text-violet-600">View All <ChevronRight size={16} strokeWidth={2.5} /></Link>
+        </div>
+        <div className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:overflow-visible lg:grid-cols-3">
           {state.influencerCollections.map((link) => (
-            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
+            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group w-[280px] shrink-0 snap-start overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60 md:w-auto">
               <div className="relative h-56 overflow-hidden">
                 <img src={link.product?.images?.[0] || ""} alt={link.title || link.product?.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
                 <span className="absolute left-3 top-3 rounded-full bg-teal-700 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">

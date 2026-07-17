@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { ShoppingCart } from "lucide-react";
 import { Loader } from "../../../shared/components/Loader";
 import { ErrorState } from "../../../shared/components/ErrorState";
 import { addWishlistThunk, removeWishlistThunk } from "../../wishlist/wishlistSlice";
@@ -333,8 +334,10 @@ export function ProductDetailPage() {
               }
             }}
             disabled={!canAdd || inCart || cartActionLoading}
+            aria-label={!canAdd ? "Select product options first" : inCart ? "Already in cart" : "Add to cart"}
+            title={!canAdd ? "Select product options first" : inCart ? "Already in cart" : "Add to cart"}
           >
-            {!canAdd ? "Select Options" : inCart ? "Added" : cartActionLoading ? "Adding..." : "Add to Cart"}
+            <ShoppingCart className={`mx-auto h-5 w-5 ${cartActionLoading ? "animate-pulse" : ""}`} />
           </button>
           <button
             className="rounded-[12px] border px-3 py-2 text-sm"
