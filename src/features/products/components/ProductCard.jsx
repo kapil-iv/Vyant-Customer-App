@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addWishlistThunk, removeWishlistThunk } from "../../wishlist/wishlistSlice";
-import { Heart } from "lucide-react";
+import { addLocalItem, addToCartThunk } from "../../cart/cartSlice";
+import { Heart, ShoppingCart } from "lucide-react";
 import { Price } from "../../../shared/components/Price";
 import { useToast } from "../../../shared/components/ToastProvider";
 
@@ -28,10 +29,17 @@ export function ProductCard({ product }) {
   const toast = useToast();
   const isAuthenticated = useSelector((s) => s.auth?.isAuthenticated);
   const wishlistIds = useSelector((s) => s.wishlist.ids) || [];
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const inWishlist = wishlistIds.includes(product._id);
   const closed = isShopClosed(product);
   const badge = resolveBadge(product);
+  const requiresOptions =
+    (Array.isArray(product?.sizes) && product.sizes.length > 0) ||
+    (Array.isArray(product?.colors) && product.colors.length > 0) ||
+    (product?.productType === "perfume" && Array.isArray(product?.attributes?.ml) && product.attributes.ml.length > 0) ||
+    (product?.unitType && product.unitType !== "piece" && Array.isArray(product?.allowedUnits) && product.allowedUnits.length > 0);
+  const outOfStock = product?.stock != null && Number(product.stock) <= 0;
 
   const handleWishlistToggle = async (e) => {
     e.preventDefault();
@@ -55,6 +63,32 @@ export function ProductCard({ product }) {
   const handleBuyNow = (e) => {
     e.preventDefault();
     navigate(`/products/${product._id}`);
+  };
+
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+
+    if (requiresOptions) {
+      toast.show("Please select product options before adding to cart.", "error");
+      navigate(`/products/${product._id}`);
+      return;
+    }
+
+    setIsAddingToCart(true);
+    const payload = { product, quantity: 1 };
+
+    try {
+      if (isAuthenticated) {
+        await dispatch(addToCartThunk(payload)).unwrap();
+      } else {
+        dispatch(addLocalItem(payload));
+      }
+      toast.show("Added to cart successfully.", "success");
+    } catch (err) {
+      toast.show(err?.message || "Add to cart failed.", "error");
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   return (
@@ -112,12 +146,28 @@ export function ProductCard({ product }) {
           </p>
         </div>
 
-        {/* ACTION BUTTON (Restored Original Gradients) */}
-        <div className="mt-4">
+        {/* ACTION BUTTONS */}
+        <div className="mt-4 grid grid-cols-2 gap-2">
           <button
+            type="button"
             className={`
-              w-full flex items-center justify-center gap-2
-              rounded-xl px-4 py-3 text-xs font-bold
+              flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-xs font-bold transition-all duration-200
+              ${
+                closed || outOfStock
+                  ? "cursor-not-allowed bg-gray-400 text-white"
+                  : "border border-sky-500 text-sky-600 hover:bg-sky-50 active:scale-[0.97]"
+              }
+            `}
+            onClick={handleAddToCart}
+            disabled={closed || outOfStock || isAddingToCart}
+          >
+            <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+            {closed || outOfStock ? "Unavailable" : isAddingToCart ? "Adding..." : "Add to Cart"}
+          </button>
+          <button
+            type="button"
+            className={`
+              flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-xs font-bold
               transition-all duration-200
               ${
                 closed
