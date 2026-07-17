@@ -22,18 +22,18 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-gray-950 text-white pt-16 pb-6 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <footer className="border-t border-vy-border bg-[#211d2a] pb-6 pt-16 text-white">
+      <div className="mx-auto max-w-[1440px] px-4 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
 
           {/* Column 1: Brand & Story */}
           <div className="space-y-6">
             <div>
               <Link to="/" className="inline-flex items-center gap-2 mb-4">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-orange-600 text-lg font-black text-white shadow-sm">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-gradient text-lg font-bold text-white shadow-sm">
                   V
                 </span>
-                <span className="text-2xl font-black tracking-tight text-white">Vyant</span>
+                <span className="font-[Outfit] text-2xl font-semibold tracking-tight text-white">Vyant</span>
               </Link>
               <p className="text-gray-400 text-sm leading-relaxed mb-4">
                 Redefining <strong>Bikaner Fashion</strong> by blending our rich local heritage with modern <strong>Influencer Collections</strong>. We are your bridge to a <strong>Local Connect</strong>, bringing authentic styles directly to you.
@@ -41,10 +41,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center gap-4 text-gray-400">
-              <a href="#" className="hover:text-orange-500 transition-colors" aria-label="Instagram"><Instagram size={20} /></a>
-              <a href="#" className="hover:text-orange-500 transition-colors" aria-label="Facebook"><Facebook size={20} /></a>
-              <a href="#" className="hover:text-orange-500 transition-colors" aria-label="X (Twitter)"><Twitter size={20} /></a>
-              <a href="#" className="hover:text-orange-500 transition-colors" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href="#" className="transition-colors hover:text-violet-300" aria-label="Instagram"><Instagram size={20} /></a>
+              <a href="#" className="transition-colors hover:text-violet-300" aria-label="Facebook"><Facebook size={20} /></a>
+              <a href="#" className="transition-colors hover:text-violet-300" aria-label="X (Twitter)"><Twitter size={20} /></a>
+              <a href="#" className="transition-colors hover:text-violet-300" aria-label="LinkedIn"><Linkedin size={20} /></a>
             </div>
 
             <div className="flex flex-col gap-2 mt-4">
@@ -61,20 +61,20 @@ export function Footer() {
 
           {/* Column 2: Navigation - Shop */}
           <div>
-            <h3 className="font-bold text-lg mb-4 text-white">Shop</h3>
+            <h3 className="mb-4 font-[Outfit] text-lg font-semibold text-white">Shop</h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              <li><Link to="/products?category=men" className="hover:text-orange-500 transition-colors">Men</Link></li>
-              <li><Link to="/products?category=women" className="hover:text-orange-500 transition-colors">Women</Link></li>
-              <li><Link to="/products?category=kids" className="hover:text-orange-500 transition-colors">Kids</Link></li>
-              <li><Link to="/products?category=accessories" className="hover:text-orange-500 transition-colors">Accessories</Link></li>
-              <li><Link to="/products?category=perfumes" className="hover:text-orange-500 transition-colors">Perfumes</Link></li>
+              <li><Link to="/products?category=men" className="transition-colors hover:text-violet-300">Men</Link></li>
+              <li><Link to="/products?category=women" className="transition-colors hover:text-violet-300">Women</Link></li>
+              <li><Link to="/products?category=kids" className="transition-colors hover:text-violet-300">Kids</Link></li>
+              <li><Link to="/products?category=accessories" className="transition-colors hover:text-violet-300">Accessories</Link></li>
+              <li><Link to="/products?category=perfumes" className="transition-colors hover:text-violet-300">Perfumes</Link></li>
             </ul>
           </div>
 
           {/* Column 3: Navigation - Support & Company */}
           <div className="flex flex-col sm:flex-row lg:flex-col gap-10 lg:gap-8">
             <div className="flex-1">
-              <h3 className="font-bold text-lg mb-4 text-white">Support</h3>
+              <h3 className="mb-4 font-[Outfit] text-lg font-semibold text-white">Support</h3>
               <ul className="space-y-3 text-sm text-gray-400">
                 <li><Link to="/contact" className="hover:text-orange-500 transition-colors">Contact Us</Link></li>
                 <li><Link to="/track-order" className="hover:text-orange-500 transition-colors">Track Order</Link></li>
@@ -84,7 +84,7 @@ export function Footer() {
             </div>
 
             <div className="flex-1">
-              <h3 className="font-bold text-lg mb-4 text-white">Company</h3>
+              <h3 className="mb-4 font-[Outfit] text-lg font-semibold text-white">Company</h3>
               <ul className="space-y-3 text-sm text-gray-400">
                 <li><Link to="/about" className="hover:text-orange-500 transition-colors">About Us</Link></li>
                 <li><Link to="/career" className="hover:text-orange-500 transition-colors">Career</Link></li>
@@ -96,18 +96,18 @@ export function Footer() {
 
           {/* Column 4: Newsletter & Admin Links */}
           <div className="text-sm">
-            <h3 className="font-bold text-lg mb-4 text-white">Stay in Style</h3>
+            <h3 className="mb-4 font-[Outfit] text-lg font-semibold text-white">Stay in Style</h3>
             <p className="text-gray-400 mb-4">Subscribe to our newsletter for the latest updates.</p>
             <form className="flex w-full mb-8" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="bg-gray-800 text-white rounded-l-lg border border-gray-700 px-4 py-2 w-full focus:outline-none focus:border-orange-500 transition-colors placeholder:text-gray-500"
+                className="w-full rounded-l-xl border border-[#494454] bg-[#2a2535] px-4 py-2 text-white transition-colors placeholder:text-gray-500 focus:outline-none focus:border-violet-300"
                 required
               />
               <button
                 type="submit"
-                className="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2 rounded-r-lg font-semibold transition-colors whitespace-nowrap"
+                className="rounded-r-xl bg-primary-gradient px-5 py-2 font-semibold text-white transition-opacity hover:opacity-90 whitespace-nowrap"
               >
                 Join
               </button>
@@ -115,7 +115,7 @@ export function Footer() {
 
             <div className="space-y-3">
               <h4 className="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Partner With Us</h4>
-              <Link to="/become-seller" className="flex items-center gap-2 text-orange-500 hover:text-orange-400 font-semibold transition-colors">
+              <Link to="/become-seller" className="flex items-center gap-2 font-semibold text-violet-300 transition-colors hover:text-violet-200">
                 <Store size={14} /> Become a Seller
               </Link>
               <Link to="/partner/store-login" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">

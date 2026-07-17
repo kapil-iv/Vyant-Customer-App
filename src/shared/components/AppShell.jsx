@@ -126,12 +126,12 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen font-sans bg-vy-bg text-vy-text" >
-      <header className="sticky top-0 z-50 border-b border-vy-border bg-vy-surface backdrop-blur">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-3 md:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 border-b border-vy-border bg-vy-surface/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-4 md:px-10">
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-vy-border md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-vy-border bg-vy-surface md:hidden"
               onClick={() => setMobileNavOpen((prev) => !prev)}
               aria-label="Toggle menu"
             >
@@ -166,7 +166,7 @@ export function AppShell() {
               </button>
 
               {categoriesMenuOpen ? (
-                <div className="absolute left-0 mt-2 w-56 rounded-xl border border-vy-border bg-vy-surface p-2 shadow-lg">
+                <div className="absolute left-0 mt-3 w-56 rounded-2xl border border-vy-border bg-vy-surface p-2 shadow-[var(--vy-shadow-hover)]">
                   <div className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-vy-muted">
                     Products
                   </div>
@@ -222,7 +222,7 @@ export function AppShell() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-vy-border bg-vy-surface text-vy-text hover:bg-vy-surface-muted"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-vy-border bg-vy-surface text-vy-text transition hover:bg-vy-surface-muted"
               aria-label="Toggle Theme"
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -230,7 +230,7 @@ export function AppShell() {
 
             <Link
               to="/cart"
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-vy-border bg-vy-surface text-vy-text"
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-vy-border bg-vy-surface text-vy-text transition hover:bg-vy-surface-muted"
               aria-label="Cart"
             >
               <ShoppingCart size={18} />
@@ -247,14 +247,14 @@ export function AppShell() {
               <button
                 type="button"
                 onClick={() => setMenuOpen((prev) => !prev)}
-                className="inline-flex items-center gap-2 rounded-xl border border-vy-border px-3 py-2 text-sm font-semibold"
+                className="inline-flex items-center gap-2 rounded-full border border-vy-border bg-vy-surface px-4 py-2 text-sm font-semibold transition hover:bg-vy-surface-muted"
               >
                 <UserCircle2 size={18} />
                 <span className="hidden md:inline">{profileLabel}</span>
               </button>
 
               {menuOpen ? (
-                <div className="absolute right-0 mt-2 w-64 rounded-xl border border-vy-border bg-vy-surface p-2 shadow-lg">
+                <div className="absolute right-0 mt-3 w-64 rounded-2xl border border-vy-border bg-vy-surface p-2 shadow-[var(--vy-shadow-hover)]">
                   <div className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-vy-muted">
                     {profileLabel}
                   </div>
@@ -320,8 +320,8 @@ export function AppShell() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1440px] px-4 pb-3 md:px-6 lg:px-8">
-          <form onSubmit={submitSearch} className="flex items-center gap-2 rounded-xl border border-vy-border bg-vy-surface px-3 py-2">
+        <div className="mx-auto max-w-[1440px] px-4 pb-4 md:px-10">
+          <form onSubmit={submitSearch} className="vy-input flex items-center gap-2 px-4 py-3">
             <Search size={16} className="text-vy-muted" />
             <input
               value={search}
@@ -411,7 +411,7 @@ export function AppShell() {
         ) : null}
       </header>
 
-      <main className="mx-auto max-w-[1440px] px-4 py-6 md:px-6 lg:px-8 md:py-8">
+      <main className="mx-auto max-w-[1440px] px-4 py-8 md:px-10 md:py-12">
         <ScrollToTop />
         <Outlet />
       </main>

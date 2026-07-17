@@ -14,7 +14,7 @@ import { HomeSidebar } from "../features/home/components/HomeSidebar";
 
 function HomeSkeleton() {
   return (
-    <div className="space-y-10 pb-16 md:space-y-12">
+    <div className="space-y-16 pb-16 md:space-y-20">
       <div className="h-[40vh] min-h-[300px] w-full animate-pulse rounded-[16px] bg-vy-surface-muted md:h-[70vh]" />
       <div className="space-y-4">
         <div className="h-8 w-48 animate-pulse rounded bg-vy-surface-muted" />
@@ -111,9 +111,9 @@ export function HomePage() {
         />
       </section>
 
-      <section className="space-y-5">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Shop By Category</h2>
+      <section className="space-y-4">
+        <div className="flex items-end justify-between gap-4">
+          <div><p className="vy-eyebrow">Curated for you</p><h2 className="vy-section-title mt-1">Shop By Category</h2></div>
         </div>
         <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 hide-scrollbar">
           {state.categoriesLoading ? (
@@ -125,7 +125,7 @@ export function HomePage() {
               <Link
                 key={cat}
                 to={`/products?category=${cat}`}
-                className="group relative w-[220px] flex-none snap-center overflow-hidden rounded-2xl border border-vy-border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20 md:w-[250px]"
+                className="group relative w-[260px] flex-none snap-center overflow-hidden rounded-2xl text-left shadow-[var(--vy-shadow)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--vy-shadow-hover)] md:w-[320px]"
               >
                 <div className="absolute inset-0 h-full w-full">
                   <img
@@ -148,21 +148,21 @@ export function HomePage() {
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Special Offers</h2>
-          <Link to="/sales" className="text-sm font-semibold text-vy-muted hover:text-vy-text">All deals</Link>
+          <div><p className="vy-eyebrow">Limited moments</p><h2 className="vy-section-title mt-1">Special Offers</h2></div>
+          <Link to="/sales" className="text-sm font-semibold text-vy-accent hover:underline">All deals</Link>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 content-stretch">
           {state.sales.map((sale) => (
-            <Link key={sale._id} to="/sales" className="group relative overflow-hidden rounded-xl border border-vy-border bg-vy-surface shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-              <div className="relative h-28 w-full bg-slate-900">
+            <Link key={sale._id} to="/sales" className="group relative overflow-hidden rounded-2xl bg-vy-surface shadow-[var(--vy-shadow)] transition hover:-translate-y-0.5 hover:shadow-[var(--vy-shadow-hover)]">
+              <div className="relative h-28 w-full bg-[#211d2a]">
                 {sale.bannerImage ? <img src={sale.bannerImage} alt={sale.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" referrerPolicy="no-referrer" /> : null}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
                 <div className="absolute bottom-2 left-2">
-                  <span className="inline-block rounded bg-indigo-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">{sale.type || "Special Deal"}</span>
+                  <span className="inline-block rounded-full bg-vy-accent px-2 py-1 text-[9px] font-semibold uppercase tracking-wider text-white shadow-sm">{sale.type || "Special Deal"}</span>
                 </div>
               </div>
               <div className="p-2.5">
-                <h3 className="line-clamp-1 text-sm font-bold tracking-tight text-vy-text hover:text-indigo-500">{sale.title}</h3>
+                <h3 className="line-clamp-1 font-[Outfit] text-sm font-semibold tracking-tight text-vy-text group-hover:text-vy-accent">{sale.title}</h3>
                 <p className="line-clamp-1 text-[11px] text-vy-muted">{sale.saleLabel || "Shop now"}</p>
               </div>
             </Link>
@@ -173,8 +173,8 @@ export function HomePage() {
 
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">New Season Essentials</h2>
-          <Link to="/products" className="text-sm font-semibold text-vy-muted hover:text-vy-text">All Products</Link>
+          <div><p className="vy-eyebrow">New arrivals</p><h2 className="vy-section-title mt-1">New Season Essentials</h2></div>
+          <Link to="/products" className="text-sm font-semibold text-vy-accent hover:underline">All Products</Link>
         </div>
         <FeaturedCarousel products={state.featured.slice(0, 10)} />
       </section>
@@ -184,18 +184,18 @@ export function HomePage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Influencers Collection</h2>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div><p className="vy-eyebrow">Creator edit</p><h2 className="vy-section-title mt-1">Influencers Collection</h2></div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {state.influencerCollections.map((link) => (
-            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden border border-vy-border bg-vy-surface transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/60">
+            <Link key={link._id} to={`/products/${link.product?._id}`} className="vy-card group overflow-hidden">
               <div className="relative h-56 overflow-hidden">
                 <img src={link.product?.images?.[0] || ""} alt={link.title || link.product?.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
-                <span className="absolute left-3 top-3 rounded-full bg-teal-700 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
+                <span className="absolute left-3 top-3 rounded-full bg-vy-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
                   {link.saleLabel || "Collection"}
                 </span>
               </div>
               <div className="space-y-1 p-4">
-                <h3 className="text-lg font-bold tracking-tight text-vy-text">{link.title || link.product?.name}</h3>
+                <h3 className="font-[Outfit] text-lg font-semibold tracking-tight text-vy-text">{link.title || link.product?.name}</h3>
                 <p className="text-sm text-vy-muted">{link.caption || "Curated by influencer"}</p>
                 <p className="text-xs font-semibold uppercase tracking-wider text-vy-muted">By {link.influencer?.name || "Influencer"}</p>
               </div>
@@ -215,7 +215,7 @@ export function HomePage() {
       {/* Amazon-like Full Catalog Display at Bottom (Full Width) */}
       <section className="mt-10 space-y-5 border-t border-vy-border pt-10">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-extrabold tracking-tight text-vy-text md:text-3xl">Today's Deals & Explore</h2>
+          <div><p className="vy-eyebrow">Browse more</p><h2 className="vy-section-title mt-1">Today&apos;s Deals & Explore</h2></div>
         </div>
 
         {catalogLoading ? (

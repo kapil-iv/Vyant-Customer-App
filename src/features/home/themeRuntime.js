@@ -1,9 +1,9 @@
 const FALLBACK_THEME = {
-  primary: "linear-gradient(135deg, #0ea5e9, #8b5cf6)",
-  secondary: "#0ea5e9",
-  accent: "#8b5cf6",
-  background: "#f8fafc",
-  text: "#0f172a"
+  primary: "linear-gradient(135deg, #6b38d4, #8455ef)",
+  secondary: "#5d5d67",
+  accent: "#6b38d4",
+  background: "#f9f9ff",
+  text: "#151c27"
 };
 
 const THEME_MODE_KEY = "vyant_theme_mode";
@@ -25,12 +25,12 @@ export function getStoredThemeMode() {
 function applySemanticVars(tokens, mode) {
   const isDark = mode === "dark";
 
-  const bg = isDark ? "#0b0f19" : (tokens.background || "#f8fafc");
-  const surface = isDark ? "#111827" : "#ffffff";
-  const surfaceMuted = isDark ? "#1f2937" : "#f1f5f9";
-  const text = isDark ? "#e5e7eb" : (tokens.text || "#0f172a");
-  const muted = isDark ? "#9ca3af" : "#64748b";
-  const border = isDark ? "#1f2937" : "#e2e8f0";
+  const bg = isDark ? "#15121c" : (tokens.background || "#f9f9ff");
+  const surface = isDark ? "#211d2a" : "#ffffff";
+  const surfaceMuted = isDark ? "#2a2535" : "#f0f3ff";
+  const text = isDark ? "#f0ebf7" : (tokens.text || "#151c27");
+  const muted = isDark ? "#cbc3d7" : "#494454";
+  const border = isDark ? "#494454" : "#cbc3d7";
 
   setCssVar("--vy-bg", bg);
   setCssVar("--vy-surface", surface);
@@ -46,13 +46,15 @@ export function applyThemeTokens(tokens, mode = getStoredThemeMode()) {
 
   const isDark = mode === "dark";
 
-  const primary = isDark && !tokens?.primary ? "linear-gradient(135deg, #38bdf8, #a78bfa)" : merged.primary;
-  const secondary = isDark && !tokens?.secondary ? "#38bdf8" : merged.secondary;
-  const accent = isDark && !tokens?.accent ? "#a78bfa" : merged.accent;
+  const primary = isDark && !tokens?.primary ? "linear-gradient(135deg, #d0bcff, #a984ff)" : merged.primary;
+  const secondary = isDark && !tokens?.secondary ? "#c7c5d1" : merged.secondary;
+  const accent = isDark && !tokens?.accent ? "#d0bcff" : merged.accent;
 
   setCssVar("--vy-primary", primary);
   setCssVar("--vy-secondary", secondary);
   setCssVar("--vy-accent", accent);
+  setCssVar("--vy-primary-solid", isDark ? "#d0bcff" : (merged.accent || "#6b38d4"));
+  setCssVar("--vy-primary-soft", isDark ? "#2d2540" : "#f0ebff");
   applySemanticVars(merged, normalizeMode(mode));
 }
 
