@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,32 +6,38 @@
 
 :root {
   color-scheme: light;
-  --vy-primary: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-  --vy-secondary: #0ea5e9;
-  --vy-accent: #8b5cf6;
-  --vy-bg: #f8fafc;
+  --vy-primary: linear-gradient(135deg, #6b38d4, #8455ef);
+  --vy-primary-solid: #6b38d4;
+  --vy-primary-soft: #f0ebff;
+  --vy-secondary: #5d5d67;
+  --vy-accent: #6b38d4;
+  --vy-bg: #f9f9ff;
   --vy-surface: #ffffff;
-  --vy-surface-muted: #f1f5f9;
-  --vy-text: #0f172a;
-  --vy-muted: #64748b;
-  --vy-border: #e2e8f0;
-  --vy-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --vy-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --vy-surface-muted: #f0f3ff;
+  --vy-surface-high: #e7eefe;
+  --vy-text: #151c27;
+  --vy-muted: #494454;
+  --vy-border: #cbc3d7;
+  --vy-shadow: 0 4px 20px rgb(77 51 129 / 0.06);
+  --vy-shadow-hover: 0 10px 30px rgb(77 51 129 / 0.12);
 }
 
 html.dark {
   color-scheme: dark;
-  --vy-primary: linear-gradient(135deg, #38bdf8, #a78bfa);
-  --vy-secondary: #38bdf8;
-  --vy-accent: #a78bfa;
-  --vy-bg: #020617; /* Deeper black for premium feel */
-  --vy-surface: #1e293b;
-  --vy-surface-muted: #334155;
-  --vy-text: #f8fafc;
-  --vy-muted: #94a3b8;
-  --vy-border: #334155;
-  --vy-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
-  --vy-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+  --vy-primary: linear-gradient(135deg, #d0bcff, #a984ff);
+  --vy-primary-solid: #d0bcff;
+  --vy-primary-soft: #2d2540;
+  --vy-secondary: #c7c5d1;
+  --vy-accent: #d0bcff;
+  --vy-bg: #15121c;
+  --vy-surface: #211d2a;
+  --vy-surface-muted: #2a2535;
+  --vy-surface-high: #302a3d;
+  --vy-text: #f0ebf7;
+  --vy-muted: #cbc3d7;
+  --vy-border: #494454;
+  --vy-shadow: 0 4px 20px rgb(0 0 0 / 0.24);
+  --vy-shadow-hover: 0 10px 30px rgb(0 0 0 / 0.35);
 }
 
 /* Base Refinements */
@@ -42,6 +48,19 @@ body {
   color: var(--vy-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--vy-primary-solid);
+  outline-offset: 3px;
 }
 
 /* Utilities */
@@ -60,8 +79,8 @@ body {
 
 .vy-card {
   background: var(--vy-surface);
-  border: 1px solid var(--vy-border);
-  border-radius: 16px; /* Slightly rounder for modern look */
+  border: 0;
+  border-radius: 16px;
   box-shadow: var(--vy-shadow);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -76,7 +95,7 @@ body {
   .vy-card:hover {
     transform: translateY(-6px);
     box-shadow: var(--vy-shadow-hover);
-    border-color: var(--vy-secondary);
+    border-color: transparent;
   }
 }
 
@@ -88,7 +107,7 @@ body {
 /* Image container within card */
 .vy-card-image-wrapper {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
 }
@@ -98,7 +117,8 @@ body {
 /* ========================= */
 
 .vy-card-title {
-  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
   font-size: 0.95rem;
   line-height: 1.25;
   color: var(--vy-text);
@@ -116,7 +136,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 12px;
+  border-radius: 9999px;
   background: var(--vy-primary);
   color: #ffffff;
   font-weight: 600;
@@ -124,12 +144,44 @@ body {
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.3);
+  box-shadow: 0 6px 18px rgb(107 56 212 / 0.24);
 }
 
 .vy-primary-btn:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
-  filter: brightness(1.1);
+  box-shadow: 0 10px 24px rgb(107 56 212 / 0.3);
+  transform: translateY(-1px);
+}
+
+.vy-primary-btn:active:not(:disabled) { transform: scale(0.98); }
+
+.vy-section-title {
+  font-family: "Outfit", sans-serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.vy-eyebrow {
+  color: var(--vy-primary-solid);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.vy-input {
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background: var(--vy-surface-muted);
+  color: var(--vy-text);
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.vy-input:focus {
+  border-color: var(--vy-primary-solid);
+  background: var(--vy-surface);
+  box-shadow: 0 0 0 3px rgb(107 56 212 / 0.12);
 }
 
 /* ========================= */
@@ -171,6 +223,9 @@ html.dark .vy-glass {
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.hide-scrollbar { scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
 
 /* index.css */
 .scrollbar-thin::-webkit-scrollbar {

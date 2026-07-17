@@ -92,10 +92,10 @@ export function ProductCard({ product }) {
   };
 
   return (
-    <article className="group relative flex flex-col w-full max-w-[280px] sm:max-w-[320px] overflow-hidden border border-vy-border bg-vy-surface transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/60 rounded-[12px]">
+    <article className="vy-card group relative w-full max-w-[280px] overflow-hidden sm:max-w-[320px]">
       
       {/* IMAGE SECTION */}
-      <div className="relative aspect-square overflow-hidden bg-slate-50">
+      <div className="relative aspect-[4/5] overflow-hidden bg-vy-surface-muted">
         <Link to={`/products/${product._id}`}>
           <img
             src={product.images?.[0] ?? ""}
@@ -106,7 +106,7 @@ export function ProductCard({ product }) {
         </Link>
 
         {/* BADGE (Teal 700 Restored) */}
-        <span className="absolute left-2 top-2 rounded-full bg-teal-700 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-white shadow-sm sm:text-[10px]">
+        <span className="absolute left-3 top-3 rounded-full bg-vy-accent px-2.5 py-1 text-[9px] font-semibold uppercase tracking-wide text-white shadow-sm sm:text-[10px]">
           {badge}
         </span>
 
@@ -114,7 +114,7 @@ export function ProductCard({ product }) {
         <button
           onClick={handleWishlistToggle}
           className={`absolute right-2 top-2 p-2 rounded-full shadow-md transition-all active:scale-90 ${
-            inWishlist ? "bg-red-50" : "bg-white/90 hover:bg-white"
+            inWishlist ? "bg-red-50" : "vy-glass hover:bg-white"
           }`}
           aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
         >
@@ -130,7 +130,7 @@ export function ProductCard({ product }) {
       <div className="flex flex-col flex-1 p-3 sm:p-4">
         <Link
           to={`/products/${product._id}`}
-          className="line-clamp-1 text-sm sm:text-base font-bold tracking-tight text-slate-800 hover:underline decoration-sky-500 underline-offset-2"
+          className="vy-card-title line-clamp-1 text-sm hover:text-vy-accent sm:text-base"
         >
           {product.name}
         </Link>
@@ -141,7 +141,7 @@ export function ProductCard({ product }) {
         </p>
 
         <div className="mt-3 flex items-center justify-between">
-          <p className="text-base sm:text-lg font-bold text-slate-900">
+          <p className="vy-price text-base sm:text-lg">
             <Price value={product.discountPrice ?? product.price} />
           </p>
         </div>
@@ -151,11 +151,11 @@ export function ProductCard({ product }) {
           <button
             type="button"
             className={`
-              flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-xs font-bold transition-all duration-200
+              flex items-center justify-center gap-2 rounded-full px-3 py-3 text-xs font-semibold transition-all duration-200
               ${
                 closed || outOfStock
                   ? "cursor-not-allowed bg-gray-400 text-white"
-                  : "border border-sky-500 text-sky-600 hover:bg-sky-50 active:scale-[0.97]"
+                  : "border border-vy-accent text-vy-accent hover:bg-[var(--vy-primary-soft)] active:scale-[0.97]"
               }
             `}
             onClick={handleAddToCart}
@@ -167,12 +167,12 @@ export function ProductCard({ product }) {
           <button
             type="button"
             className={`
-              flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-xs font-bold
+              flex items-center justify-center gap-2 rounded-full px-3 py-3 text-xs font-semibold
               transition-all duration-200
               ${
                 closed
                   ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-gradient-to-r from-sky-500 to-violet-500 text-white hover:opacity-90 active:scale-[0.97] shadow-lg shadow-sky-100"
+                  : "bg-primary-gradient text-white hover:opacity-90 active:scale-[0.97] shadow-lg shadow-violet-500/20"
               }
             `}
             onClick={handleBuyNow}

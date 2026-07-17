@@ -29,7 +29,7 @@ export function HeroSlider({ theme, fallbackImage }) {
       ctaLink: "/sales",
       badge: "New Season",
       badgeIcon: Sparkles,
-      color: "from-amber-500/20 to-orange-500/20"
+      color: "from-violet-400/30 to-purple-300/10"
     },
     {
       id: "slide-2",
@@ -41,7 +41,7 @@ export function HeroSlider({ theme, fallbackImage }) {
       ctaLink: "/products?category=women",
       badge: "Trending",
       badgeIcon: TrendingUp,
-      color: "from-red-500/20 to-rose-500/20"
+      color: "from-fuchsia-400/30 to-violet-300/10"
     },
     {
         id: "slide-3",
@@ -53,7 +53,7 @@ export function HeroSlider({ theme, fallbackImage }) {
         ctaLink: "/products?category=men",
         badge: "Featured",
         badgeIcon: ShoppingBag,
-        color: "from-purple-500/20 to-pink-500/20"
+      color: "from-violet-500/30 to-indigo-300/10"
       },
   ];
 
@@ -106,7 +106,7 @@ export function HeroSlider({ theme, fallbackImage }) {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl md:rounded-[24px] bg-slate-900 shadow-2xl w-full">
+    <div className="relative w-full overflow-hidden rounded-[24px] bg-[#211d2a] shadow-[var(--vy-shadow-hover)]">
       <div
         className="relative w-full overflow-hidden"
         onTouchStart={handleTouchStart}
@@ -119,7 +119,7 @@ export function HeroSlider({ theme, fallbackImage }) {
         >
           {slides.map((slide, idx) => (
             <div key={slide.id} className="relative min-w-full flex-shrink-0">
-              <div className={`${isMobile ? getMobileHeight() : 'h-[85vh] lg:h-[90vh]'} w-full relative`}>
+              <div className={`${isMobile ? getMobileHeight() : 'h-[72vh] max-h-[760px] min-h-[560px]'} relative w-full`}>
                 <picture>
                   <source media="(max-width: 768px)" srcSet={slide.mobileImage} />
                   <img
@@ -130,7 +130,7 @@ export function HeroSlider({ theme, fallbackImage }) {
                   />
                 </picture>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent md:bg-gradient-to-r md:from-black/90 md:via-black/40 md:to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#18111f]/95 via-[#18111f]/50 to-transparent md:bg-gradient-to-r md:from-[#18111f]/90 md:via-[#18111f]/42 md:to-transparent" />
 
                 {/* Fixed Content Container */}
                 <div className="absolute inset-0 flex items-end md:items-center px-5 py-12 md:px-16 lg:px-24">
@@ -144,7 +144,7 @@ export function HeroSlider({ theme, fallbackImage }) {
                     </div>
 
                     {/* Title - Fixed width and wrapping */}
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tighter whitespace-normal break-words">
+                    <h1 className="font-[Outfit] text-4xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-5xl md:text-6xl lg:text-7xl whitespace-normal break-words">
                       {slide.title}
                     </h1>
 
@@ -157,7 +157,7 @@ export function HeroSlider({ theme, fallbackImage }) {
                     <div className="flex flex-col sm:flex-row gap-3 pt-2 md:pt-4">
                       <Link
                         to={slide.ctaLink}
-                        className="group relative overflow-hidden rounded-full bg-indigo-600 px-6 py-3 text-sm md:text-base font-bold uppercase text-white transition-all text-center sm:w-auto"
+                        className="group relative overflow-hidden rounded-full bg-primary-gradient px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-violet-950/20 transition-all hover:scale-[1.02] active:scale-[0.98] md:text-base sm:w-auto"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                           {slide.ctaText}
@@ -167,7 +167,7 @@ export function HeroSlider({ theme, fallbackImage }) {
 
                       <Link
                         to="/products"
-                        className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm md:text-base font-bold uppercase text-white backdrop-blur-sm transition-all text-center sm:w-auto hover:bg-white/20"
+                        className="rounded-full border border-white/30 bg-white/10 px-6 py-3 text-center text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 md:text-base sm:w-auto"
                       >
                         All Products
                       </Link>
@@ -189,7 +189,7 @@ export function HeroSlider({ theme, fallbackImage }) {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full h-1.5 ${currentSlide === index ? 'w-8 bg-indigo-500' : 'w-2 bg-white/40'}`}
+              className={`transition-all duration-300 rounded-full h-1.5 ${currentSlide === index ? 'w-8 bg-[#d0bcff]' : 'w-2 bg-white/40'}`}
             />
           ))}
         </div>
